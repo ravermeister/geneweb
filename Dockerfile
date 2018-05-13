@@ -4,7 +4,7 @@ MAINTAINER fanningert <thomas@fanninger.at>
 
 RUN apk update && \
 	apk add --no-cache --update bash && \
-	apk add --no-cache --update opam && \
+	apk add --no-cache --update ncurses opam && \
         apk add --no-cache --update git
 
 RUN opam init

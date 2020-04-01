@@ -1,16 +1,16 @@
-FROM fanningert/baseimage-alpine
+From arm64v8/alpine
 
-MAINTAINER fanningert <thomas@fanninger.at>
+#MAINTAINER fanningert <thomas@fanninger.at>
+MAINTAINER ravermeister <jonny@rimkus.it>
 
-RUN apk update && \
-	apk add --no-cache --update bash && \
-	apk add --no-cache --update ncurses opam && \
-        apk add --no-cache --update git
+RUN apk update
+RUN apk add --no-cache --update bash ncurses opam git m4 make
 
-RUN opam init
+RUN opam init -y --disable-sandboxing
 RUN opam update
-RUN opam switch 4.05.0
-RUN eval `opam config env`
+#RUN opam switch 4.05.0 4.05.0
+#RUN eval `opam config env`
+RUN opam config env
 RUN opam install -y ocamlfind camlp5
 
 RUN mkdir -p /geneweb

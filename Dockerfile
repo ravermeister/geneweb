@@ -12,7 +12,7 @@ RUN apk add --no-cache --update bash ncurses build-base linux-headers coreutils 
 RUN opam init -y --disable-sandboxing
 RUN opam update -a -y
 #RUN opam switch create 4.05.0 
-RUN opam config env --switch 4.06.0
+#RUN opam switch create 4.06.0
 #RUN eval $(opam config env)
 #RUN eval $(opam env)
 #RUN opam install -y camlp5 cppo dune markup ounit ocurl piqi piqilib redis redis-sync yojson stdlib-shims num zarith uucp unidecode

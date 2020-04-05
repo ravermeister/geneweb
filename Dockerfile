@@ -6,21 +6,22 @@ From arm64v8/alpine
 MAINTAINER ravermeister <jonny@rimkus.it>
 
 RUN apk update
-#RUN apk add --no-cache --update bash ncurses build-base openssl-dev pcre-dev zstd-dev libffi-dev linux-headers net-snmp-dev net-snmp-libs coreutils linux-pam-dev pkgconfig patch make m4 unzip bubblewrap gcc gmp gmp-dev perl git rsync mercurial opam ocaml ocaml-dev
-RUN apk add --no-cache --update bash ncurses build-base linux-headers coreutils curl-dev make m4 unzip gcc pkgconfig gmp-dev perl-dev git mercurial rsync opam ocaml-dev ocaml-compiler-libs ocaml-findlib-dev ocaml-ocamldoc
+RUN apk add --no-cache --update bash ncurses build-base linux-headers coreutils \
+ curl-dev make m4 unzip gcc pkgconfig gmp-dev perl-dev git mercurial rsync \
+ opam ocaml-dev ocaml-compiler-libs ocaml-findlib-dev ocaml-ocamldoc
 
 RUN opam init -y --disable-sandboxing
-RUN opam update -a -y
+#RUN opam update -a -y
 #RUN opam switch create 4.05.0 
 #RUN opam switch create 4.06.0
 #RUN eval $(opam config env)
 #RUN eval $(opam env)
 #RUN opam install -y camlp5 cppo dune markup ounit ocurl piqi piqilib redis redis-sync yojson stdlib-shims num zarith uucp unidecode
 RUN opam install -y camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson
-#RUN eval $(opam env)
 
 RUN mkdir -p /geneweb
 RUN git clone https://github.com/geneweb/geneweb /geneweb
+
 RUN cd /geneweb && ocaml ./configure.ml --api && make clean distrib
 
 #RUN cd /geneweb && ./configure && make opt && make distrib

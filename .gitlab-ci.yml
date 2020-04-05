@@ -1,0 +1,4 @@
+build_image:
+  script:
+    - docker build -t geneweb .
+#    - docker run my-docker-image /script/to/run/tests

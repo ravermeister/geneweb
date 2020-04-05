@@ -10,7 +10,6 @@ MAINTAINER ravermeister <jonny@rimkus.it>
 # opam ocaml-dev ocaml-compiler-libs ocaml-findlib-dev ocaml-ocamldoc
 
 #RUN opam init -y --disable-sandboxing
-RUN opam init -y
 #RUN opam update -a -y
 RUN opam install -y --unlock-base camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind
 

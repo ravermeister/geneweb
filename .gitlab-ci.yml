@@ -1,8 +1,6 @@
 build_image:
   tags:
     - shell-virusrock
-  tags:
-    - docker-armhf-ocaml
   script:
     - docker build -t geneweb .
 #    - docker run my-docker-image /script/to/run/tests

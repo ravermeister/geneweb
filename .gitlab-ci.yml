@@ -1,0 +1,6 @@
+build_image:
+  tags:
+  - docker-armhf
+  script:
+    - docker build -t geneweb .
+#    - docker run my-docker-image /script/to/run/tests

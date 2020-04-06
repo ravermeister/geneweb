@@ -8,7 +8,7 @@ MAINTAINER ravermeister <jonny@rimkus.it>
 # build-base linux-headers coreutils curl-dev make m4 unzip\
 # gcc pkgconfig gmp-dev perl-dev git mercurial rsync\
 # opam ocaml-dev ocaml-compiler-libs ocaml-findlib-dev ocaml-ocamldoc
-RUN apk update && apk upgrade --no-cache &&
+RUN apk update && apk upgrade --no-cache &&\
  apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl-dev make m4 unzip\
  gcc pkgconfig gmp-dev perl-dev git mercurial rsync opam

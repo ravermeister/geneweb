@@ -4,11 +4,14 @@ From arm64v8/alpine
 
 MAINTAINER ravermeister <jonny@rimkus.it>
 
+#RUN apk update && apk add --no-cache --update bash ncurses\
+# build-base linux-headers coreutils curl-dev make m4 unzip\
+# gcc pkgconfig gmp-dev perl-dev git mercurial rsync\
+# opam ocaml-dev ocaml-compiler-libs ocaml-findlib-dev ocaml-ocamldoc
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl-dev make m4 unzip\
- gcc pkgconfig gmp-dev perl-dev git mercurial rsync\
- opam ocaml-dev ocaml-compiler-libs ocaml-findlib-dev ocaml-ocamldoc
-
+ gcc pkgconfig gmp-dev perl-dev git mercurial rsync opam
+ 
 RUN opam init -y --disable-sandboxing
 RUN export PATH="$(opam config var bin):$PATH"
 #RUN echo "PATH: >>$PATH<<"

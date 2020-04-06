@@ -13,11 +13,8 @@ RUN apk update && apk upgrade --no-cache &&\
  build-base linux-headers coreutils curl-dev make m4 unzip\
  gcc pkgconfig gmp-dev perl-dev git mercurial rsync opam
 
-RUN echo ">>>$(opam config var bin)<<<"
-RUN export PATH="$(opam config var bin):$PATH"
-#RUN echo "PATH: >>$PATH<<"
- 
 RUN opam init -y --disable-sandboxing
+RUN export PATH="$(opam config var bin):$PATH"
 RUN echo ">>>$(opam config var bin)<<<"
 
 RUN opam update -a -y

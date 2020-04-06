@@ -10,7 +10,8 @@ RUN apk update && apk add --no-cache --update bash ncurses\
  opam ocaml-dev ocaml-compiler-libs ocaml-findlib-dev ocaml-ocamldoc
 
 RUN opam init -y --disable-sandboxing
-RUN export PATH="$(opam config var bin):$PATH" && echo "PATH: >>$PATH<<"
+RUN export PATH="$(opam config var bin):$PATH"
+#RUN echo "PATH: >>$PATH<<"
 
 RUN opam update -a -y
 RUN opam install -y --unlock-base camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind

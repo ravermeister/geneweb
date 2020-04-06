@@ -13,8 +13,6 @@ RUN opam init -y --disable-sandboxing
 RUN opam update -a -y
 RUN opam install -y --unlock-base camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind
 
-RUN eval $(opam env)
-
 RUN mkdir -p /geneweb
 RUN git clone https://github.com/geneweb/geneweb /geneweb
 RUN cd /geneweb && ocaml ./configure.ml --api && make clean distrib

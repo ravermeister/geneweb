@@ -14,7 +14,7 @@ RUN apk update && apk upgrade --no-cache &&\
  gcc pkgconfig gmp-dev perl-dev git mercurial rsync opam
 
 RUN export PATH="$(opam config var bin):$PATH"
-#RUN echo "PATH: >>$PATH<<"
+RUN echo "PATH: >>$PATH<<"
  
 RUN opam init -y --disable-sandboxing
 

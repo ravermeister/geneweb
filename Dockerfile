@@ -15,7 +15,7 @@ RUN apk update && apk upgrade --no-cache &&\
 
 RUN opam init -y --disable-sandboxing
 RUN export PATH="$(opam config var bin):$PATH"
-RUN echo ">>>$(opam config var bin)<<<"
+#RUN echo "PATH: >$PATH<"
 
 RUN opam update -a -y
 RUN opam upgrade -a -y

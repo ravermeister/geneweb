@@ -22,9 +22,9 @@ RUN apk update && apk add --no-cache --update bash ncurses\
 #RUN curl -s https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh --output ~/install.sh &&\
 RUN export BINDIR="/usr/local/bin" &&\
  curl -s https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/raw/master/install-opam.sh\
- --output ~/install.sh && chmod +x ~/install.sh && ~/install.sh
+ --output ~/install.sh && chmod +x ~/install.sh && ~/install.sh && ls -l /usr/local/bin
 
-RUN export PATH="$(opam config var bin):$PATH" && echo "PATH: >$PATH<"
+#RUN export PATH="$(opam config var bin):$PATH"
 #RUN echo "PATH: >$PATH<"
 
 RUN opam update -a -y

@@ -27,7 +27,6 @@ RUN export BINDIR="/usr/local/bin" &&\
 #RUN export PATH="$(opam config var bin):$PATH"
 #RUN echo "PATH: >$PATH<"
 
-RUN cat /usr/local/bin/opam
 
 RUN opam init -y --disable-sandboxing
 RUN opam update -a -y

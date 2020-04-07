@@ -17,7 +17,7 @@ MAINTAINER ravermeister <jonny@rimkus.it>
 
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl-dev curl make m4 unzip\
- gcc pkgconfig gmp-dev perl-dev git mercurial rsync openssl opam-dev
+ gcc pkgconfig gmp-dev perl-dev git mercurial rsync openssl opam opam-dev
 
 #RUN curl -s https://raw.githubusercontent.com/ocaml/opam/master/shel/install.sh --output ~/install.sh &&\
 # chmod +x ~/install.sh && ~/install.sh && chmod +x $BINDIR/opam

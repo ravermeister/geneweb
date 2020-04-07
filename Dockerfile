@@ -16,7 +16,7 @@ MAINTAINER ravermeister <jonny@rimkus.it>
 #RUN opam init -y --disable-sandboxing
 
 RUN apk update && apk add --no-cache --update bash ncurses\
- build-base linux-headers coreutils curl-dev make m4 unzip\
+ build-base linux-headers coreutils curl-dev curl make m4 unzip\
  gcc pkgconfig gmp-dev perl-dev git mercurial rsync
 
 #RUN bash <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)

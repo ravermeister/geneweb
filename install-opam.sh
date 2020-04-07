@@ -4,6 +4,7 @@ set -ue
 
 # (c) Copyright Fabrice Le Fessant INRIA/OCamlPro 2013
 # (c) Copyright Louis Gesbert OCamlPro 2014-2017
+# see https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh
 
 VERSION='2.0.6'
 TAG=$(echo "$VERSION" | tr '~' '-')

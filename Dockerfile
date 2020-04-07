@@ -17,12 +17,10 @@ MAINTAINER ravermeister <jonny@rimkus.it>
 
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl-dev curl make m4 unzip\
- gcc pkgconfig gmp-dev perl-dev git mercurial rsync openssl
+ gcc pkgconfig gmp-dev perl-dev git mercurial rsync openssl opam-dev
 
-#RUN curl -s https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh --output ~/install.sh &&\
-RUN export BINDIR="/usr/local/bin" &&\
- curl -s https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/raw/master/install-opam.sh\
- --output ~/install.sh && chmod +x ~/install.sh && ~/install.sh && chmod +x $BINDIR/opam
+#RUN curl -s https://raw.githubusercontent.com/ocaml/opam/master/shel/install.sh --output ~/install.sh &&\
+# chmod +x ~/install.sh && ~/install.sh && chmod +x $BINDIR/opam
 
 #RUN export PATH="$(opam config var bin):$PATH"
 #RUN echo "PATH: >$PATH<"

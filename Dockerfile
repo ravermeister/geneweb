@@ -17,11 +17,11 @@ MAINTAINER ravermeister <jonny@rimkus.it>
 
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl-dev curl make m4 unzip\
- gcc pkgconfig gmp-dev perl-dev git mercurial rsync
+ gcc pkgconfig gmp-dev perl-dev git mercurial rsync openssl
 
 #RUN bash <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
 RUN curl -s https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh --output ~/install.sh &&\
- chmod +x ~/install.sh && ~/install.sh
+ chmod +x ~/install.sh && ~/install.sh -y
 
 RUN export PATH="$(opam config var bin):$PATH"
 #RUN echo "PATH: >$PATH<"

@@ -8,16 +8,10 @@ MAINTAINER ravermeister <jonny@rimkus.it>
 # build-base linux-headers coreutils curl-dev make m4 unzip\
 # gcc pkgconfig gmp-dev perl-dev git mercurial rsync\
 # opam ocaml-dev ocaml-compiler-libs ocaml-findlib-dev ocaml-ocamldoc
-#RUN apk update && apk upgrade --no-cache &&\
-# apk add --no-cache --update bash ncurses\
-# build-base linux-headers coreutils curl-dev make m4 unzip\
-# gcc pkgconfig gmp-dev perl-dev git mercurial rsync opam
-
-#RUN opam init -y --disable-sandboxing
-
-RUN apk update && apk add --no-cache --update bash ncurses\
- build-base linux-headers coreutils curl-dev curl make m4 unzip\
- gcc pkgconfig gmp-dev perl-dev git mercurial rsync openssl opam opam-dev
+RUN apk update && apk upgrade --no-cache &&\
+ apk add --no-cache --update bash ncurses\
+ build-base linux-headers coreutils curl-dev make m4 unzip\
+ gcc pkgconfig gmp-dev perl-dev git mercurial rsync opam ocaml-dev
 
 #RUN curl -s https://raw.githubusercontent.com/ocaml/opam/master/shel/install.sh --output ~/install.sh &&\
 # chmod +x ~/install.sh && ~/install.sh && chmod +x $BINDIR/opam

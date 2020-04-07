@@ -27,6 +27,9 @@ RUN export BINDIR="/usr/local/bin" &&\
 #RUN export PATH="$(opam config var bin):$PATH"
 #RUN echo "PATH: >$PATH<"
 
+RUN ls -l /usr/local/bin/opam
+
+RUN opam init -y --disable-sandboxing
 RUN opam update -a -y
 RUN opam upgrade -a -y
 #RUN opam install -y --unlock-base camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind

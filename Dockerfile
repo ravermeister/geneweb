@@ -22,15 +22,15 @@ RUN apk update && apk add --no-cache --update bash ncurses\
 #RUN curl -s https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh --output ~/install.sh &&\
 RUN export BINDIR="/usr/local/bin" &&\
  curl -s https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/raw/master/install-opam.sh\
- --output ~/install.sh && chmod +x ~/install.sh && ~/install.sh && ls -l /usr/local/bin
+ --output ~/install.sh && chmod +x ~/install.sh && ~/install.sh
 
 #RUN export PATH="$(opam config var bin):$PATH"
 #RUN echo "PATH: >$PATH<"
 
-RUN opam update -a -y
-RUN opam upgrade -a -y
+RUN /usr/local/bin/opam update -a -y
+RUN /usr/local/bin/opam upgrade -a -y
 #RUN opam install -y --unlock-base camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind
-RUN opam install -y camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind
+RUN /usr/local/bin/opam install -y camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind
 
 RUN mkdir -p /geneweb
 RUN git clone https://github.com/geneweb/geneweb /geneweb

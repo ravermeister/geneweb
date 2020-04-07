@@ -23,7 +23,7 @@ RUN apk update && apk add --no-cache --update bash ncurses\
 RUN curl -s https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh --output ~/install.sh &&\
  chmod +x ~/install.sh && ~/install.sh -y
 
-RUN export PATH="$(opam config var bin):$PATH"
+RUN export PATH="$(opam config var bin):$PATH" && export BINDIR="/usr/local/bin"
 #RUN echo "PATH: >$PATH<"
 
 RUN opam update -a -y

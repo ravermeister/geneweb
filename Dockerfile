@@ -24,7 +24,7 @@ RUN export BINDIR="/usr/local/bin" &&\
  curl -s https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/raw/master/install-opam.sh\
  --output ~/install.sh && chmod +x ~/install.sh && ~/install.sh
 
-RUN export PATH="$(opam config var bin):$PATH"
+RUN export PATH="$(opam config var bin):$PATH" && echo "PATH: >$PATH<"
 #RUN echo "PATH: >$PATH<"
 
 RUN opam update -a -y

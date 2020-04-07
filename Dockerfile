@@ -19,10 +19,9 @@ RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl-dev curl make m4 unzip\
  gcc pkgconfig gmp-dev perl-dev git mercurial rsync openssl
 
-RUN export BINDIR="/usr/local/bin"
-
 #RUN curl -s https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh --output ~/install.sh &&\
-RUN curl -s https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/raw/master/install-opam.sh\
+RUN export BINDIR="/usr/local/bin" &&\
+ curl -s https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/raw/master/install-opam.sh\
  --output ~/install.sh && chmod +x ~/install.sh && ~/install.sh
 
 RUN export PATH="$(opam config var bin):$PATH"

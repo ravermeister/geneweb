@@ -24,7 +24,7 @@ RUN opam init -y --disable-sandboxing
 RUN opam update -a -y
 RUN opam upgrade -a -y
 #RUN opam install -y --unlock-base camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind
-#RUN opam install -y camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind
+RUN opam install -y camlp5 cppo dune markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson ocamlfind
 
 RUN opam pin add -y geneweb-bin -k git https://github.com/geneweb/geneweb --no-action
 RUN opam -y depext geneweb-bin

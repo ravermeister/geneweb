@@ -21,6 +21,4 @@ RUN eval $(opam env)
 RUN opam install -y geneweb-bin
 RUN eval $(opam env)
 
-#RUN cd /geneweb && ./configure && make opt && make distrib
-#ADD root/ /
-#RUN chmod -v +x /etc/services.d/*/run /etc/cont-init.d/*
+################# end of build ####################

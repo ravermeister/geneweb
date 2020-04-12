@@ -30,8 +30,8 @@ RUN eval $(opam env)
 
 RUN opam pin add -y geneweb-bin -k git https://github.com/geneweb/geneweb --no-action
 RUN opam -y depext geneweb-bin
+RUN eval $(opam env)
 RUN opam install -y geneweb-bin
-
 RUN eval $(opam env)
 
 #RUN mkdir -p /geneweb

@@ -8,5 +8,6 @@ docker run -d -t \
  -p 2316:2316 \
  -l raver/geneweb \
  -v /var/log/geneweb:/var/log/geneweb \
+ --name geneweb \
  raver/geneweb:latest \
  genweb-launch.sh

@@ -26,3 +26,5 @@ RUN eval $(opam env) &&\
 RUN eval $(opam env) &&\
  cd /root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev &&\
   make clean distrib
+
+ADD geneweb-launch.sh /usr/local/bin/genweb-launch.sh

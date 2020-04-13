@@ -2,5 +2,9 @@
 
 docker build -t raver/geneweb .
 
-#docker run gwd
-#docker run gwsetup
+docker run -t \
+ -p 2317:2317 \
+ -p 2316:2316 \
+ -l raver/geneweb \
+ raver/geneweb:latest \
+ genweb-launch.sh

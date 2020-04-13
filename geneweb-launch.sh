@@ -1,11 +1,53 @@
-#!/bin/sh
+#!/bin/bash
 # Jonny Rimkus <jonny@rimkus.it>
 # Geneweb start script for use inside the docker image
 
-eval $(opam env)
-cd /root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev/distribution
+GWD_PID=
+GWD_STATUS=
+GWSETUP_PID=
+GWSETUP_STATUS=
+LOGDIR=/var/log/geneweb
+DISTDIR=/root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev/distribution
 
-bin/gwd 2>&1 >/var/log/gwd.log &
-bin/gwsetup 2>&1 >/var/log/gwsetup &
+isalive(){
+	if [ $GWD_STATUS -ne 0 -o $GWSETUP_STATUS -ne 0 ]; then
+		echo "gwsetup or gwd has died!" >&2
+		exit 1
+	fi
+}
 
-echo "gwd and gwsetup successfully started"
+init() {
+	eval $(opam env)
+	mkdir -p $LOGDIR
+	cd $DISTDIR
+}
+
+start() {
+	init
+
+	./gwsetup >$LOGDIR/gwsetup.log 2>&1 &
+	GWSETUP_PID=$!
+	GWSETUP_STATUS=$?
+
+	./gwd >$LOGDIR/gwd.log 2>&1 &
+	GWD_PID=$!
+	GWD_STATUS=$?
+
+	isalive
+	echo "gwd and gwsetup started!"
+	watch
+}
+
+watch() {
+
+	while sleep 60; do
+		ps aux | grep gwsetup | grep -q -v grep GWSETUP_STATUS
+		ps aux | grep gwd | grep -q -v grep GWD_STATUS
+		isalive
+	done
+}
+
+start
+
+exit 0
+

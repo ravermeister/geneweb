@@ -6,6 +6,7 @@ GWD_PID=
 GWD_STATUS=
 GWSETUP_PID=
 GWSETUP_STATUS=
+GWSETUP_LANG=de
 LOGDIR=/var/log/geneweb
 DISTDIR=/root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev/distribution
 
@@ -25,7 +26,7 @@ init() {
 start() {
 	init
 
-	./gwsetup >$LOGDIR/gwsetup.log 2>&1 &
+	./gwsetup -lang $GWSETUP_LANG >$LOGDIR/gwsetup.log 2>&1 &
 	GWSETUP_PID=$!
 	GWSETUP_STATUS=$?
 

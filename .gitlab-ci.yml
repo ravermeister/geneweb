@@ -6,4 +6,5 @@ build_image:
     - docker save -o geneweb.tar geneweb:latest
 #    - docker run my-docker-image /script/to/run/tests
   artifacts:
+    paths:
     - geneweb.tar

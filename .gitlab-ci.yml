@@ -3,4 +3,7 @@ build_image:
     - armhf-shell
   script:
     - docker build -t geneweb .
+    - docker save -o geneweb.tar geneweb:latest
 #    - docker run my-docker-image /script/to/run/tests
+  artfifacts:
+    - geneweb.tar

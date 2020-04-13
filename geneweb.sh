@@ -1,9 +1,11 @@
 #!/bin/sh
 
-start() {
+setup() {
 	docker build -t raver/geneweb .
-
 	mkdir -p /var/log/geneweb/
+}
+
+start() {
 	docker run -d -t \
 	 -p 2317:2317 \
 	 -p 2316:2316 \
@@ -11,13 +13,12 @@ start() {
 	 -v /var/log/geneweb:/var/log/geneweb \
 	 --name geneweb \
 	 raver/geneweb:latest \
-	 genweb-launch.sh
+	 genweb-launch.sh >/dev/null 2>&1
 }
 
 stop() {
-	docker stop geneweb
-	docker rm geneweb
-	status
+	docker stop geneweb >/dev/null 2>&1
+	docker rm geneweb >/dev/null 2>&1
 }
 
 status(){
@@ -25,17 +26,38 @@ status(){
 }
 
 usage(){
-	echo "$(basename $0) start|stop|restart|status"
+	echo "$(basename $0) setup|start|stop|restart|status"
 }
 
 case $1 in
 
+	setup)
+		echo "building docker image"
+		setup
+	;;
+
 	start)
+		echo -n "Starting..."
 		start
+		echo "Done"
+		status
 	;;
 
 	stop)
+		echo -n "Stopping..."
 		stop
+		echo "Done"
+		status
+	;;
+
+	restart)
+		echo -n "Stopping..."
+		stop
+		echo "Done"
+		echo "Starting..."
+		start
+		echo "Done"
+		status
 	;;
 
 	status)
@@ -46,4 +68,6 @@ case $1 in
 		usage
 	;;
 esac
+
+exit 0
 

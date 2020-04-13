@@ -1,8 +1,10 @@
 #!/bin/sh
 
+LOGDIR=/var/log/geneweb
+
 setup() {
 	docker build -t raver/geneweb .
-	mkdir -p /var/log/geneweb/
+	mkdir -p $LOGDIR
 }
 
 start() {
@@ -10,7 +12,7 @@ start() {
 	 -p 2317:2317 \
 	 -p 2316:2316 \
 	 -l raver/geneweb \
-	 -v /var/log/geneweb:/var/log/geneweb \
+	 -v $LOGDIR:/var/log/geneweb \
 	 --name geneweb \
 	 raver/geneweb:latest \
 	 genweb-launch.sh >/dev/null 2>&1

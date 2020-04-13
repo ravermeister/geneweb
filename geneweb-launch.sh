@@ -27,12 +27,11 @@ init() {
 
 start() {
 	init
-
-	./gwsetup -lang $GWSETUP_LANG -log $LOGDIR/gwsetup.log &
+	./gwsetup -daemon -lang $GWSETUP_LANG >>$LOGDIR/gwsetup.log 2>&1
 	GWSETUP_PID=$!
 	GWSETUP_STATUS=$?
 
-	./gwd -lang $GWD_LANG -log $LOGDIR/gwd.log &
+	./gwd -daemon -lang $GWD_LANG -log $LOGDIR/gwd.log >>$LOGDIR/gwd.log 2>&1
 	GWD_PID=$!
 	GWD_STATUS=$?
 

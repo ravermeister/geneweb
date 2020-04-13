@@ -2,9 +2,9 @@ build_image:
   tags:
     - armhf-shell
   script:
-    - docker build -t geneweb .
-    - docker save -o geneweb.tar geneweb:latest
+    - docker build -t raver/geneweb .
+#    - docker save -o geneweb.tar geneweb:latest
 #    - docker run my-docker-image /script/to/run/tests
-  artifacts:
-    paths:
-    - geneweb.tar
+#  artifacts:
+#    paths:
+#    - geneweb.tar

@@ -1,5 +1,5 @@
 before_script:
-  - docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_PASSWORD"
+  - /bin/basg -c 'docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_PASSWORD"'
   
 build-master:
   stage: build

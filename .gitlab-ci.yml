@@ -1,5 +1,5 @@
 before_script:
-  - echo "Login: $CI_REGISTRY" && docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  - docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
   
 build-master:
   stage: build

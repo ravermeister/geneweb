@@ -2,7 +2,25 @@
 Arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository").
 The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/armhf-geneweb)
 
-## starting
+## Quickstart
+```bash
+git clone https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker.git geneweb
+cd geneweb
+./geneweb.sh setup
+./geneweb.sh start
+```
+*  gwsetup will be available on localhost:2316
+*  gwd will be available on localhost:2317
+
+Note, if you would like to build the container from the raw Dockerfile use 
+`./geneweb build` instead of `./geneweb setup`
+
+for gwsetup you must edit the `config/gwsetup_only` file and 
+replace the IP with the local IP or Hostname where the docker container runs within.
+Note that you have to rerun the `./geneweb setup` and restart the container to have the settings applied.
+
+
+## starting (without git checkout)
 ```bash
 # prepare shared folders
 CONFDIR=/etc/geneweb
@@ -28,17 +46,3 @@ replace the IP with the local IP or Hostname where the docker container runs wit
 
 *  gwsetup will be available on localhost:2316
 *  gwd will be available on localhost:2317
-
-## developement
-```bash
-git clone https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker.git geneweb
-cd geneweb
-./geneweb.sh setup
-./geneweb.sh start
-```
-*  gwsetup will be available on localhost:2316
-*  gwd will be available on localhost:2317
-
-for gwsetup you must edit the `assets/gwsetup_only` file and 
-replace the IP with the local IP or Hostname where the docker container runs within.
-Note that you have to rerun the `./geneweb setup` and restart the container to have the settings applied.

@@ -5,8 +5,13 @@ CONFDIR=$(dirname $(readlink -f '$0'))/config
 GWD_PORT=2317
 GWSETUP_PORT=2316
 
-setup() {
+build() {
 	docker build -t raver/geneweb .
+	mkdir -p $LOGDIR
+}
+
+setup(){
+	docker pull ravermeister/armhf-geneweb
 	mkdir -p $LOGDIR
 }
 
@@ -32,14 +37,19 @@ status(){
 }
 
 usage(){
-	echo "$(basename $0) setup|start|stop|restart|status"
+	echo "$(basename $0) build|setup|start|stop|restart|status"
 }
 
 case $1 in
 
 	setup)
-		echo "building docker image"
+		echo "pulling newest stable image"
 		setup
+	;;
+
+	build)
+		echo "building docker image"
+		build
 	;;
 
 	start)

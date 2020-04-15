@@ -1,15 +1,24 @@
 before_script:
   - echo -n "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_SERVER"
-  
+
 build-release:
   stage: build
   tags:
     - armhf-shell
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+  only:
+    - /^release\/.*$/
+
+publish-release:
+  stage: deploy
+  tags:
+    - armhf-shell
+  script:
     - docker push "$CI_REGISTRY_IMAGE"
   only:
     - /^release\/.*$/
+###########################
 
 build-feature:
   stage: build
@@ -17,9 +26,18 @@ build-feature:
     - armhf-shell
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+  only:
+    - /^feature\/.*$/
+
+publish-feature:
+  stage: deploy
+  tags:
+    - armhf-shell
+  script:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^feature\/.*$/
+###########################
 
 build-hotfix:
   stage: build
@@ -30,6 +48,16 @@ build-hotfix:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^hotfix\/.*$/
+    
+publish-hotfix:
+  stage: deploy
+  tags:
+    - armhf-shell
+  script:
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  only:
+    - /^hotfix\/.*$/
+###########################
 
 build-develop:
   stage: build
@@ -41,4 +69,12 @@ build-develop:
   only:
     - /^develop\/.*$/
     
-    
+publish-develop:
+  stage: deploy
+  tags:
+    - armhf-shell
+  script:
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  only:
+    - /^develop\/.*$/
+###########################

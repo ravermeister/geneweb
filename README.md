@@ -25,8 +25,10 @@ Note that you have to rerun the `./geneweb setup` and restart the container to h
 # prepare shared folders
 CONFDIR=/etc/geneweb
 LOGDIR=/var/log/geneweb
+DATADIR=/var/local/geneweb
 mkdir -p $CONFDIR
 echo "127.0.0.1" >$CONFDIR/gwsetup_only
+mkdir -p $DATADIR
 mkdir -p $LOGDIR
 # pull the image
 docker pull ravermeister/armhf-geneweb
@@ -36,6 +38,7 @@ docker run -d -t \
 -p 2316:2316 \
 -l raver/geneweb \
 -v $CONFDIR:/etc/geneweb \
+-v $DATADIR:/var/local/geneweb \
 -v $LOGDIR:/var/log/geneweb \
 --name geneweb \
 raver/geneweb:latest \

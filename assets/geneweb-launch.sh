@@ -12,6 +12,7 @@ GWD_LANG=de
 
 CONFDIR=/etc/geneweb
 LOGDIR=/var/log/geneweb
+DATADIR=/var/local/datadir
 DISTDIR=/root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev/distribution
 
 isalive(){
@@ -24,19 +25,21 @@ isalive(){
 init() {
 	eval $(opam env)
 	mkdir -p $LOGDIR
-	cd $DISTDIR
+	cd $DATADIR
 }
 
 start() {
 	init
-	./gwsetup -daemon \
+	$DISTDIR/gwsetup -daemon \
+	-gd $DISTDIR \
 	-lang $GWSETUP_LANG \
 	-only $CONFDIR/gwsetup_only \
 	>>$LOGDIR/gwsetup.log 2>&1
 	GWSETUP_PID=$!
 	GWSETUP_STATUS=$?
 
-	./gwd -daemon \
+	$DISTDIR/gwd -daemon \
+	-bd $DATADIR \
 	-lang $GWD_LANG \
 	-log $LOGDIR/gwd.log \
 	>>$LOGDIR/gwd.log 2>&1

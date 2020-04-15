@@ -2,8 +2,10 @@
 
 LOGDIR=$(dirname $(readlink -f '$0'))/log
 CONFDIR=$(dirname $(readlink -f '$0'))/config
-GWD_PORT=2317
-GWSETUP_PORT=2316
+DATADIR=$(dirname $(readlink -f '$0'))/data
+
+GWD_PORT=3317
+GWSETUP_PORT=3316
 
 build() {
 	docker build -t raver/geneweb .
@@ -20,8 +22,9 @@ start() {
 	 -p $GWD_PORT:2317 \
 	 -p $GWSETUP_PORT:2316 \
 	 -l raver/geneweb \
-	 -v $LOGDIR:/var/log/geneweb \
 	 -v $CONFDIR:/etc/geneweb \
+	 -v $DATADIR:/var/local/geneweb \
+	 -v $LOGDIR:/var/log/geneweb \
 	 --name geneweb \
 	 raver/geneweb:latest \
 	 geneweb-launch.sh >/dev/null 2>&1

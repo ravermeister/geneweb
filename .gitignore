@@ -22,3 +22,4 @@ setup.log
 
 # custom ignores
 log/
+data/

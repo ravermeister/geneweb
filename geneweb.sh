@@ -1,9 +1,9 @@
 #!/bin/sh
 
 LOGDIR=/var/log/geneweb
-
+CONFDIR=$(readlink -f "$0")/config
 setup() {
-	docker build -t raver/geneweb .
+	docker build -t raver/geneweb $(readlink -f "$0")/assets
 	mkdir -p $LOGDIR
 }
 
@@ -13,6 +13,7 @@ start() {
 	 -p 2316:2316 \
 	 -l raver/geneweb \
 	 -v $LOGDIR:/var/log/geneweb \
+	 -v $CONFDIR:/etc/geneweb
 	 --name geneweb \
 	 raver/geneweb:latest \
 	 genweb-launch.sh >/dev/null 2>&1

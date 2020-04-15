@@ -8,7 +8,7 @@ The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeis
 CONFDIR=/etc/geneweb
 LOGDIR=/var/log/geneweb
 mkdir -p $CONFDIR
-cp -R config/* $CONFDIR
+echo "127.0.0.1" >$CONFDIR/gwsetup_only
 mkdir -p $LOGDIR
 # pull the image
 docker pull ravermeister/armhf-geneweb

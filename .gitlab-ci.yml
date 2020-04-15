@@ -9,7 +9,7 @@ build-release:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
   only:
-    - release/*
+    - /^release\/.*$/
 
 build-feature:
   stage: build
@@ -19,7 +19,7 @@ build-feature:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
-    - feature/*
+    - /^feature\/.*$/
 
 build-hotfix:
   stage: build
@@ -29,7 +29,7 @@ build-hotfix:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
-    - hotfix/*
+    - /^hotfix\/.*$/
 
 build-develop:
   stage: build
@@ -39,6 +39,6 @@ build-develop:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
-    - develop/*
+    - /^release\/.*$/
     
     

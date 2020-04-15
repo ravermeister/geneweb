@@ -1,5 +1,5 @@
 # docker-geneweb
-Arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository")
+Arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository").
 the generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/armhf-geneweb)
 
 ## starting

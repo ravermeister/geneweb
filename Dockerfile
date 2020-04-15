@@ -28,6 +28,6 @@ RUN eval $(opam env) &&\
 
 RUN mkdir -p /etc/geneweb
 ADD assets/gwsetup_only /etc/geneweb/gwsetup_only
-ADD assets/geneweb-launch.sh /usr/local/bin/genweb-launch.sh
+ADD assets/geneweb-launch.sh /usr/local/bin/geneweb-launch.sh
 
 EXPOSE 2316-2317

@@ -8,7 +8,7 @@ The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeis
 CONFDIR=/etc/geneweb
 LOGDIR=/var/log/geneweb
 mkdir -p $CONFDIR
-cp -R config/* $CONFDIR
+echo "127.0.0.1" >$CONFDIR/gwsetup_only
 mkdir -p $LOGDIR
 # pull the image
 docker pull ravermeister/armhf-geneweb
@@ -23,7 +23,7 @@ docker run -d -t \
 raver/geneweb:latest \
 genweb-launch.sh
 ```
-for gwsetup you must edit the `$CONFDIR/gwsetup-auth` file and 
+for gwsetup you must edit the `$CONFDIR/gwsetup_only` file and 
 replace the IP with the local IP or Hostname where the docker container runs within.
 
 *  gwsetup will be available on localhost:2316
@@ -39,6 +39,6 @@ cd geneweb
 *  gwsetup will be available on localhost:2316
 *  gwd will be available on localhost:2317
 
-for gwsetup you must edit the `assets/gwsetup-auth` file and 
+for gwsetup you must edit the `assets/gwsetup_only` file and 
 replace the IP with the local IP or Hostname where the docker container runs within.
 Note that you have to rerun the `./geneweb setup` and restart the container to have the settings applied.

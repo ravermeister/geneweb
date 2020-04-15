@@ -2,6 +2,7 @@ From arm64v8/alpine
 
 MAINTAINER ravermeister <jonny@rimkus.it>
 
+EXPOSE 2316-2317
 
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl make m4 unzip gcc\

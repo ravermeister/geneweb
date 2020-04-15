@@ -27,7 +27,7 @@ RUN eval $(opam env) &&\
   make clean distrib
 
 RUN mkdir -p /etc/geneweb
-ADD gwsetup-auth /etc/geneweb/gwsetup-auth
-ADD geneweb-launch.sh /usr/local/bin/genweb-launch.sh
+ADD assets/gwsetup_only /etc/geneweb/gwsetup_only
+ADD assets/geneweb-launch.sh /usr/local/bin/genweb-launch.sh
 
 EXPOSE 2316-2317

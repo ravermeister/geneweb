@@ -9,6 +9,8 @@ GWSETUP_STATUS=
 
 GWSETUP_LANG=de
 GWD_LANG=de
+
+CONFDIR=/etc/geneweb
 LOGDIR=/var/log/geneweb
 DISTDIR=/root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev/distribution
 
@@ -31,7 +33,7 @@ start() {
 	GWSETUP_PID=$!
 	GWSETUP_STATUS=$?
 
-	./gwd -daemon -lang $GWD_LANG -log $LOGDIR/gwd.log >>$LOGDIR/gwd.log 2>&1
+	./gwd -daemon -lang $GWD_LANG -only $CONFDIR/gwsetup_only -log $LOGDIR/gwd.log >>$LOGDIR/gwd.log 2>&1
 	GWD_PID=$!
 	GWD_STATUS=$?
 

@@ -2,8 +2,6 @@ From arm64v8/alpine
 
 MAINTAINER ravermeister <jonny@rimkus.it>
 
-EXPOSE 2316-2317
-
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl make m4 unzip gcc\
  pkgconfig gmp-dev perl-dev git subversion mercurial rsync\
@@ -28,4 +26,8 @@ RUN eval $(opam env) &&\
  cd /root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev &&\
   make clean distrib
 
+RUN mkdir -p /etc/geneweb
+ADD gwsetup-auth /etc/geneweb/gwsetup-auth
 ADD geneweb-launch.sh /usr/local/bin/genweb-launch.sh
+
+EXPOSE 2316-2317

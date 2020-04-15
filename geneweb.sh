@@ -24,7 +24,7 @@ start() {
 	 -v $CONFDIR:/etc/geneweb \
 	 --name geneweb \
 	 raver/geneweb:latest \
-	 genweb-launch.sh >/dev/null 2>&1
+	 geneweb-launch.sh >/dev/null 2>&1
 }
 
 stop() {

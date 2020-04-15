@@ -39,7 +39,7 @@ docker run -d -t \
 -v $LOGDIR:/var/log/geneweb \
 --name geneweb \
 raver/geneweb:latest \
-genweb-launch.sh
+geneweb-launch.sh
 ```
 for gwsetup you must edit the `$CONFDIR/gwsetup_only` file and 
 replace the IP with the local IP or Hostname where the docker container runs within.

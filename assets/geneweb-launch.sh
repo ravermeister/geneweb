@@ -10,11 +10,6 @@ GWSETUP_STATUS=
 GWSETUP_LANG=de
 GWD_LANG=de
 
-CONFDIR=/etc/geneweb
-DATASHARE=/var/local/geneweb
-LOGDIR=/var/log/geneweb
-DISTDIR=/root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev/distribution
-
 isalive(){
 	if [ $GWD_STATUS -ne 0 -o $GWSETUP_STATUS -ne 0 ]; then
 		echo "gwsetup or gwd has died!" >&2
@@ -24,26 +19,30 @@ isalive(){
 
 init() {
 	eval $(opam env)
-	mkdir -p $DATASHARE/data
-	ln -s $DISTDIR/bases $DATASHARE/geneweb
-	mkdir -p $LOGDIR
-	cd $DISTDIR
 }
 
 start() {
 	init
-	./gwsetup -daemon \
+	share/dist/gw/gwsetup \
+	-daemon \
+	-bd share/data \
+	-gd share/dist/gw
+	-only etc/gwsetup_only \
 	-lang $GWSETUP_LANG \
-	-only $CONFDIR/gwsetup_only \
-	>>$LOGDIR/gwsetup.log 2>&1
+	>>log/gwsetup.log 2>&1
 	GWSETUP_PID=$!
 	GWSETUP_STATUS=$?
 
-	./gwd -daemon \
+	share/dist/gw/gwd \
+	-daemon \
 	-a 127.0.0.1 \
+	-hd share/dist/gw \
+	-bd share/data \
+	-trace_failed_passwd \
 	-lang $GWD_LANG \
-	-log $LOGDIR/gwd.log \
-	>>$LOGDIR/gwd.log 2>&1
+	-blang $GWD_LANG \
+	-log log/gwd.log \
+	>>log/gwd.log 2>&1
 	GWD_PID=$!
 	GWD_STATUS=$?
 

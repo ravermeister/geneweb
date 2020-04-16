@@ -33,7 +33,7 @@ RUN eval $(opam env) && make clean distrib
 RUN mv distribution /usr/local/share/geneweb/share/dist
 
 WORKDIR /usr/local/share/geneweb
-ADD assets/gwsetup_only config/gwsetup_only
+ADD assets/gwsetup_only etc/gwsetup_only
 ADD assets/geneweb-launch.sh bin/geneweb-launch.sh
 
 RUN mv share/dist/bases share/data

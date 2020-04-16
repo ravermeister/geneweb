@@ -24,11 +24,11 @@ start() {
 	 -p $GWD_PORT:2317 \
 	 -p $GWSETUP_PORT:2316 \
 	 -p $GWAPI_PORT:2322 \
-	 -l raver/geneweb \
 	 -v $CONFDIR:/usr/local/share/geneweb/etc \
 	 -v $DATADIR:/usr/local/share/geneweb/share/data \
 	 -v $LOGDIR:/usr/local/share/geneweb/log \
-	 --user geneweb \
+	 --user root \
+	 -l raver/geneweb \
 	 --name geneweb \
 	 raver/geneweb:latest \
 	 /usr/local/share/geneweb/bin/geneweb-launch.sh >/dev/null 2>&1

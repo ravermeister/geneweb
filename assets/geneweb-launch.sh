@@ -18,11 +18,14 @@ isalive(){
 }
 
 init() {
-	eval $(opam env)
+	chown -R geneweb:geneweb share/data
+	chown -R geneweb:geneweb etc
+	chown -R geneweb:geneweb log
 }
 
 start() {
-	init
+	eval $(opam env)
+
 	share/dist/gw/gwsetup \
 	-daemon \
 	-bd share/data \
@@ -35,7 +38,6 @@ start() {
 
 	share/dist/gw/gwd \
 	-daemon \
-	-a 127.0.0.1 \
 	-hd share/dist/gw \
 	-bd share/data \
 	-trace_failed_passwd \
@@ -60,7 +62,12 @@ watch() {
 	done
 }
 
-start
+if [ $(id -u) -eq 0 ]; then
+	init
+	su -c "$0" -l geneweb
+else
+	start
+fi
 
 exit 0
 

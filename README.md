@@ -38,10 +38,9 @@ docker run -d -t \
 -p 2316:2316 \
 -p 2322:2322 \
 -l raver/geneweb \
--v $CONFDIR:/usr/local/share/geneweb/etc/geneweb \
+-v $CONFDIR:/usr/local/share/geneweb/etc \
 -v $DATADIR:/usr/local/share/geneweb/share/data \
--v $LOGDIR:/usr/local/share/geneweb/log/geneweb \
---user geneweb \
+-v $LOGDIR:/usr/local/share/geneweb/log \
 --name geneweb \
 raver/geneweb:latest \
 /usr/local/share/geneweb/bin/geneweb-launch.sh

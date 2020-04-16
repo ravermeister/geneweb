@@ -5,16 +5,17 @@ MAINTAINER ravermeister <jonny@rimkus.it>
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl make m4 unzip gcc\
  pkgconfig gmp-dev perl-dev git subversion mercurial rsync\
- curl-dev musl-dev protoc opam
+ curl-dev musl-dev redis protoc opam
 
 RUN adduser -D -h /usr/local/share/geneweb -s /bin/bash geneweb geneweb
 USER geneweb:geneweb
 
 WORKDIR /usr/local/share/geneweb
-RUN mkdir etc
-RUN mkdir bin
-RUN mkdir share
-RUN mkdir log
+RUN mkdir etc &&\
+ mkdir bin &&\
+ mkdir -p share/redis &&\
+ mkdir log &&\
+ mkdir tmp
 
 RUN opam init -y --disable-sandboxing
 RUN eval $(opam env) && opam update -a -y
@@ -35,6 +36,7 @@ RUN mv distribution /usr/local/share/geneweb/share/dist
 WORKDIR /usr/local/share/geneweb
 ADD assets/gwsetup_only etc/gwsetup_only
 ADD assets/geneweb-launch.sh bin/geneweb-launch.sh
+ADD assets/redis.conf /etc/redis.conf
 
 RUN mv share/dist/bases share/data
 

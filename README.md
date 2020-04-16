@@ -19,7 +19,6 @@ for gwsetup you must edit the `config/gwsetup_only` file and
 replace the IP with the local IP or Hostname where the docker container runs within.
 Note that you have to rerun the `./geneweb setup` and restart the container to have the settings applied.
 
-
 ## starting (without git checkout)
 ```bash
 # prepare shared folders
@@ -50,3 +49,12 @@ replace the IP with the local IP or Hostname where the docker container runs wit
 
 *  gwsetup will be available on localhost:2316
 *  gwd will be available on localhost:2317
+
+## Configuration
+there are 3 folders which are currently exposed:
+*  log -> all log files are written into this folder
+*  config -> all neccessary config files. Note you can overwrite the default `redis.conf` 
+*  data -> all geneweb databases
+and create an authority file for gwd where each line is e.g `user:password`. 
+The file __must__ be called `gwd_passwd` because the `geneweb-launch.sh` 
+starts gwd with the correct runtime argument when the file is fonund

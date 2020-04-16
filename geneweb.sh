@@ -4,8 +4,8 @@ LOGDIR=$(dirname $(readlink -f '$0'))/log
 CONFDIR=$(dirname $(readlink -f '$0'))/config
 DATADIR=$(dirname $(readlink -f '$0'))/data
 
-GWD_PORT=3317
-GWSETUP_PORT=3316
+GWD_PORT=2317
+GWSETUP_PORT=2316
 
 build() {
 	docker build -t raver/geneweb .

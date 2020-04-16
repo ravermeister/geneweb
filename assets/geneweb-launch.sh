@@ -51,18 +51,34 @@ start() {
 	GWSETUP_PID=$!
 	GWSETUP_STATUS=$?
 
-	../dist/gw/gwd \
-	-daemon \
-	-redis 127.0.0.1 \
-	-redis_p 6379 \
-	-trace_failed_passwd \
-	-hd ../dist/gw \
-	-lang $GWD_LANG \
-	-blang \
-	-log ../../log/gwd.log \
-	>>../../log/gwd.log 2>&1
-	GWD_PID=$!
-	GWD_STATUS=$?
+	if [ -f ../../etc/gwd_passwd ]; then
+		../dist/gw/gwd \
+		-daemon \
+		-redis 127.0.0.1 \
+		-redis_p 6379 \
+		-trace_failed_passwd \
+		-auth ../../etc/gwd_passwd \
+		-hd ../dist/gw \
+		-lang $GWD_LANG \
+		-blang \
+		-log ../../log/gwd.log \
+		>>../../log/gwd.log 2>&1
+		GWD_PID=$!
+		GWD_STATUS=$?
+	else
+		../dist/gw/gwd \
+		-daemon \
+		-redis 127.0.0.1 \
+		-redis_p 6379 \
+		-trace_failed_passwd \
+		-hd ../dist/gw \
+		-lang $GWD_LANG \
+		-blang \
+		-log ../../log/gwd.log \
+		>>../../log/gwd.log 2>&1
+		GWD_PID=$!
+		GWD_STATUS=$?
+	fi
 
 	isalive
 	echo "redis gwd and gwsetup started!"

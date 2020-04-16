@@ -7,6 +7,15 @@ RUN apk update && apk add --no-cache --update bash ncurses\
  pkgconfig gmp-dev perl-dev git subversion mercurial rsync\
  curl-dev musl-dev protoc opam
 
+RUN adduser -D -h /usr/local/share/geneweb -s /bin/bash geneweb geneweb
+USER geneweb:geneweb
+
+WORKDIR /usr/local/share/geneweb
+RUN mkdir etc
+RUN mkdir bin
+RUN mkdir share
+RUN mkdir log
+
 RUN opam init -y --disable-sandboxing
 RUN eval $(opam env) && opam update -a -y
 RUN eval $(opam env) && opam upgrade -a -y
@@ -18,16 +27,16 @@ RUN eval $(opam env) && opam pin add -y geneweb-bin -k git https://github.com/ge
 RUN eval $(opam env) && opam -y depext geneweb-bin
 RUN eval $(opam env) && opam install -y geneweb-bin
 
-RUN cd /root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev
-RUN eval $(opam env) &&\
- cd /root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev &&\
- ocaml ./configure.ml --api
-RUN eval $(opam env) &&\
- cd /root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev &&\
-  make clean distrib
+WORKDIR .opam/4.10.0/.opam-switch/build/geneweb-bin.~dev
+RUN eval $(opam env) && ocaml ./configure.ml --api
+RUN eval $(opam env) && make clean distrib
+RUN mv distribution /usr/local/share/geneweb/share/dist
 
-RUN mkdir -p /etc/geneweb
-ADD assets/gwsetup_only /etc/geneweb/gwsetup_only
-ADD assets/geneweb-launch.sh /usr/local/bin/geneweb-launch.sh
+WORKDIR /usr/local/share/geneweb
+ADD assets/gwsetup_only etc/gwsetup_only
+ADD assets/geneweb-launch.sh bin/geneweb-launch.sh
+
+RUN mv share/dist/bases share/data
 
 EXPOSE 2316-2317
+EXPOSE 2322

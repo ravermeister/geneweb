@@ -51,13 +51,15 @@ start() {
 	GWSETUP_PID=$!
 	GWSETUP_STATUS=$?
 
-	if [ -f ../../etc/gwd_passwd ]; then
+	GWD_AUTH_FILE=/usr/local/share/geneweb/etc/gwd_passwd
+
+	if [ -f $GWD_AUTH_FILE ]; then
 		../dist/gw/gwd \
 		-daemon \
 		-redis 127.0.0.1 \
 		-redis_p 6379 \
 		-trace_failed_passwd \
-		-auth ../../etc/gwd_passwd \
+		-auth $GWD_AUTH_FILE \
 		-hd ../dist/gw \
 		-lang $GWD_LANG \
 		-blang \

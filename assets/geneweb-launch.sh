@@ -40,7 +40,6 @@ start() {
 	-daemon \
 	-trace_failed_passwd \
 	-hd ../dist/gw \
-	-trace_failed_passwd \
 	-lang $GWD_LANG \
 	-blang \
 	-log ../../log/gwd.log \

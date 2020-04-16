@@ -25,26 +25,26 @@ init() {
 
 start() {
 	eval $(opam env)
+	cd share/data
 
-	share/dist/gw/gwsetup \
+	../dist/gw/gwsetup \
 	-daemon \
-	-bd share/data \
-	-gd share/dist/gw
-	-only etc/gwsetup_only \
+	-gd ../dist/gw \
+	-only ../../etc/gwsetup_only \
 	-lang $GWSETUP_LANG \
-	>>log/gwsetup.log 2>&1
+	>>../../log/gwsetup.log 2>&1
 	GWSETUP_PID=$!
 	GWSETUP_STATUS=$?
 
-	share/dist/gw/gwd \
+	../dist/gw/gwd \
 	-daemon \
-	-hd share/dist/gw \
-	-bd share/data \
+	-trace_failed_passwd \
+	-hd ../dist/gw \
 	-trace_failed_passwd \
 	-lang $GWD_LANG \
 	-blang \
-	-log log/gwd.log \
-	>>log/gwd.log 2>&1
+	-log ../../log/gwd.log \
+	>>../../log/gwd.log 2>&1
 	GWD_PID=$!
 	GWD_STATUS=$?
 

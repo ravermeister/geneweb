@@ -40,7 +40,7 @@ start() {
 	-bd share/data \
 	-trace_failed_passwd \
 	-lang $GWD_LANG \
-	-blang $GWD_LANG \
+	-blang \
 	-log log/gwd.log \
 	>>log/gwd.log 2>&1
 	GWD_PID=$!

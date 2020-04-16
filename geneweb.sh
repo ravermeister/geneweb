@@ -6,7 +6,7 @@ DATADIR=$(dirname $(readlink -f '$0'))/data
 
 GWD_PORT=3317
 GWSETUP_PORT=3316
-
+GWAPI_PORT=3322
 build() {
 	docker build -t raver/geneweb .
 	mkdir -p $DATADIR
@@ -23,13 +23,15 @@ start() {
 	docker run -d -t \
 	 -p $GWD_PORT:2317 \
 	 -p $GWSETUP_PORT:2316 \
+	 -p $GWAPI_PORT:2322 \
 	 -l raver/geneweb \
-	 -v $CONFDIR:/etc/geneweb \
-	 -v $DATADIR:/var/local/geneweb/data \
-	 -v $LOGDIR:/var/log/geneweb \
+	 -v $CONFDIR:/usr/local/share/geneweb/etc \
+	 -v $DATADIR:/usr/local/share/geneweb/share/data \
+	 -v $LOGDIR:/usr/local/share/geneweb/log \
+	 --user geneweb \
 	 --name geneweb \
 	 raver/geneweb:latest \
-	 geneweb-launch.sh >/dev/null 2>&1
+	 /usr/local/share/geneweb/bin/geneweb-launch.sh >/dev/null 2>&1
 }
 
 stop() {

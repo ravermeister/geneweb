@@ -37,7 +37,6 @@ ADD assets/gwsetup_only config/gwsetup_only
 ADD assets/geneweb-launch.sh bin/geneweb-launch.sh
 
 RUN mv share/dist/bases share/data
-RUN export PATH="/usr/local/share/geneweb/bin:$PATH"
 
 EXPOSE 2316-2317
 EXPOSE 2322

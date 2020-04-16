@@ -36,13 +36,15 @@ docker pull ravermeister/armhf-geneweb
 docker run -d -t \
 -p 2317:2317 \
 -p 2316:2316 \
+-p 2322:2322 \
 -l raver/geneweb \
--v $CONFDIR:/etc/geneweb \
--v $DATADIR:/root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev/distribution/bases \
--v $LOGDIR:/var/log/geneweb \
+-v $CONFDIR:/usr/local/share/geneweb/etc/geneweb \
+-v $DATADIR:/usr/local/share/geneweb/share/data \
+-v $LOGDIR:/usr/local/share/geneweb/log/geneweb \
+--user geneweb \
 --name geneweb \
 raver/geneweb:latest \
-geneweb-launch.sh
+/usr/local/share/geneweb/bin/geneweb-launch.sh
 ```
 for gwsetup you must edit the `$CONFDIR/gwsetup_only` file and 
 replace the IP with the local IP or Hostname where the docker container runs within.

@@ -9,11 +9,13 @@ GWSETUP_PORT=3316
 
 build() {
 	docker build -t raver/geneweb .
+	mkdir -p $DATADIR
 	mkdir -p $LOGDIR
 }
 
 setup(){
 	docker pull ravermeister/armhf-geneweb
+	mkdir -p $DATADIR
 	mkdir -p $LOGDIR
 }
 
@@ -23,7 +25,7 @@ start() {
 	 -p $GWSETUP_PORT:2316 \
 	 -l raver/geneweb \
 	 -v $CONFDIR:/etc/geneweb \
-	 -v $DATADIR:/var/local/geneweb \
+	 -v $DATADIR:/var/local/geneweb/data \
 	 -v $LOGDIR:/var/log/geneweb \
 	 --name geneweb \
 	 raver/geneweb:latest \

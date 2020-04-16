@@ -38,7 +38,7 @@ docker run -d -t \
 -p 2316:2316 \
 -l raver/geneweb \
 -v $CONFDIR:/etc/geneweb \
--v $DATADIR:/var/local/geneweb \
+-v $DATADIR:/root/.opam/4.10.0/.opam-switch/build/geneweb-bin.~dev/distribution/bases \
 -v $LOGDIR:/var/log/geneweb \
 --name geneweb \
 raver/geneweb:latest \

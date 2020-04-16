@@ -1,7 +1,9 @@
 # docker-geneweb
 Arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository").
-The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/armhf-geneweb)
-[![master pipeline status](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/badges/release/master/pipeline.svg)](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/commits/release/master)
+The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/armhf-geneweb)  
+Master: [![pipeline status](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/badges/release/master/pipeline.svg)](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/commits/release/master)  
+Develop: [![pipeline status](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/badges/develop/master/pipeline.svg)](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/commits/develop/master)
+
 
 
 ## Quickstart

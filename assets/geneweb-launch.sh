@@ -14,6 +14,7 @@ REDIS_STATUS=
 GWSETUP_LANG=de
 GWD_LANG=de
 
+## runs as geneweb
 isalive(){
 	if [ $GWD_STATUS -ne 0 -o $GWSETUP_STATUS -ne 0 -o $REDIS_STATUS -ne 0 ]; then
 		echo "either gwsetup, gwd or redis has died!" >&2
@@ -21,6 +22,7 @@ isalive(){
 	fi
 }
 
+## runs as root
 init() {
 	chown -R geneweb:geneweb share/data
 	chown -R geneweb:geneweb etc
@@ -33,6 +35,7 @@ init() {
 	fi
 }
 
+## runs as geneweb
 start() {
 	eval $(opam env)
 
@@ -87,6 +90,7 @@ start() {
 	watch
 }
 
+## runs as geneweb
 watch() {
 
 	while sleep 60; do
@@ -97,6 +101,10 @@ watch() {
 	done
 }
 
+
+## main routine
+## run init things as root (set permissions etc.)
+## run the startup routine as correct geneweb user
 if [ $(id -u) -eq 0 ]; then
 	init
 	su -c "$0" -l geneweb

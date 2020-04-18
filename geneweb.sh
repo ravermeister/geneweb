@@ -78,7 +78,7 @@ case $1 in
 		echo -n "Stopping..."
 		stop
 		echo "Done"
-		echo "Starting..."
+		echo -n "Starting..."
 		start
 		echo "Done"
 		status

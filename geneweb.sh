@@ -7,8 +7,13 @@ DATADIR=$(dirname $(readlink -f '$0'))/data
 GWD_PORT=3317
 GWSETUP_PORT=3316
 GWAPI_PORT=3322
+
 build() {
-	docker build -t raver/geneweb .
+	if [ "$1" = "--force" ]; then
+		docker build --no-cache -t raver/geneweb .
+	else
+		docker build -t raver/geneweb .
+	fi
 	mkdir -p $DATADIR
 	mkdir -p $LOGDIR
 }
@@ -44,7 +49,8 @@ status(){
 }
 
 usage(){
-	echo "$(basename $0) build|setup|start|stop|restart|status"
+	echo "$(basename $0) build [--force]"
+	echo "$(basename $0) setup|start|stop|restart|status"
 }
 
 case $1 in
@@ -56,7 +62,7 @@ case $1 in
 
 	build)
 		echo "building docker image"
-		build
+		build $2
 	;;
 
 	start)

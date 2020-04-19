@@ -1,6 +1,11 @@
 # docker-geneweb
 Arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository").
-The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/armhf-geneweb)
+The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/armhf-geneweb)  
+
+| Develop | Master |
+|---     |  ---    |
+| [![pipeline status](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/badges/develop/master/pipeline.svg)](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/commits/develop/master) | [![pipeline status](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/badges/release/master/pipeline.svg)](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/commits/release/master) |
+
 
 ## Quickstart
 ```bash
@@ -18,7 +23,6 @@ Note, if you would like to build the container from the raw Dockerfile use
 for gwsetup you must edit the `config/gwsetup_only` file and 
 replace the IP with the local IP or Hostname where the docker container runs within.
 Note that you have to rerun the `./geneweb setup` and restart the container to have the settings applied.
-
 
 ## starting (without git checkout)
 ```bash
@@ -38,10 +42,9 @@ docker run -d -t \
 -p 2316:2316 \
 -p 2322:2322 \
 -l raver/geneweb \
--v $CONFDIR:/usr/local/share/geneweb/etc/geneweb \
+-v $CONFDIR:/usr/local/share/geneweb/etc \
 -v $DATADIR:/usr/local/share/geneweb/share/data \
--v $LOGDIR:/usr/local/share/geneweb/log/geneweb \
---user geneweb \
+-v $LOGDIR:/usr/local/share/geneweb/log \
 --name geneweb \
 raver/geneweb:latest \
 /usr/local/share/geneweb/bin/geneweb-launch.sh
@@ -51,3 +54,12 @@ replace the IP with the local IP or Hostname where the docker container runs wit
 
 *  gwsetup will be available on localhost:2316
 *  gwd will be available on localhost:2317
+
+## Configuration
+there are 3 folders which are currently exposed:
+*  log -> all log files are written into this folder
+*  config -> all neccessary config files. Note you can overwrite the default `redis.conf` 
+*  data -> all geneweb databases
+and create an authority file for gwd where each line is e.g `user:password`. 
+The file __must__ be called `gwd_passwd` because the `geneweb-launch.sh` 
+starts gwd with the correct runtime argument when the file is fonund

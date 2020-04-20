@@ -9,7 +9,11 @@ GWSETUP_PORT=2316
 GWAPI_PORT=2322
 
 build() {
-	docker build -t raver/geneweb .
+	if [ "$1" = "--force" ]; then
+		docker build --no-cache -t raver/geneweb .
+	else
+		docker build -t raver/geneweb .
+	fi
 	mkdir -p $DATADIR
 	mkdir -p $LOGDIR
 }
@@ -28,11 +32,9 @@ start() {
 	 -v $CONFDIR:/usr/local/share/geneweb/etc \
 	 -v $DATADIR:/usr/local/share/geneweb/share/data \
 	 -v $LOGDIR:/usr/local/share/geneweb/log \
-	 --user root \
 	 -l raver/geneweb \
 	 --name geneweb \
-	 raver/geneweb:latest \
-	 /usr/local/share/geneweb/bin/geneweb-launch.sh >/dev/null 2>&1
+	 raver/geneweb:latest
 }
 
 stop() {
@@ -45,7 +47,8 @@ status(){
 }
 
 usage(){
-	echo "$(basename $0) build|setup|start|stop|restart|status"
+	echo "$(basename $0) build [--force]"
+	echo "$(basename $0) setup|start|stop|restart|status"
 }
 
 case $1 in
@@ -57,7 +60,7 @@ case $1 in
 
 	build)
 		echo "building docker image"
-		build
+		build $2
 	;;
 
 	start)

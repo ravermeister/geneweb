@@ -40,5 +40,8 @@ ADD assets/redis.conf /etc/redis.conf
 
 RUN mv share/dist/bases share/data
 
+USER root
+ENTRYPOINT bin/geneweb-launch.sh >/dev/null 2>&1
+
 EXPOSE 2316-2317
 EXPOSE 2322

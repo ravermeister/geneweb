@@ -32,11 +32,9 @@ start() {
 	 -v $CONFDIR:/usr/local/share/geneweb/etc \
 	 -v $DATADIR:/usr/local/share/geneweb/share/data \
 	 -v $LOGDIR:/usr/local/share/geneweb/log \
-	 --user root \
 	 -l raver/geneweb \
 	 --name geneweb \
-	 raver/geneweb:latest \
-	 /usr/local/share/geneweb/bin/geneweb-launch.sh >/dev/null 2>&1
+	 raver/geneweb:latest
 }
 
 stop() {

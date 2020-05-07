@@ -31,7 +31,7 @@ CONFDIR=/etc/geneweb
 LOGDIR=/var/log/geneweb
 DATADIR=/var/local/geneweb
 mkdir -p $CONFDIR
-echo "127.0.0.1" >$CONFDIR/gwsetup_only
+echo "172.17.0.1" >$CONFDIR/gwsetup_only
 mkdir -p $DATADIR
 mkdir -p $LOGDIR
 # pull the image
@@ -59,7 +59,6 @@ replace the IP with the local IP or Hostname where the docker container runs wit
 there are 3 folders which are currently exposed:
 *  log -> all log files are written into this folder
 *  config -> all neccessary config files. Note you can overwrite the default `redis.conf` 
-*  data -> all geneweb databases
-and create an authority file for gwd where each line is e.g `user:password`. 
+*  data -> all geneweb databases. You can create an authority file for gwd where each line is e.g `user:password`. 
 The file __must__ be called `gwd_passwd` because the `geneweb-launch.sh` 
-starts gwd with the correct runtime argument when the file is fonund
+starts gwd with the correct runtime argument when the file is found.

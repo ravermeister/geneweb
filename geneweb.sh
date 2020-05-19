@@ -32,6 +32,7 @@ start() {
 	 -v $CONFDIR:/usr/local/share/geneweb/etc \
 	 -v $DATADIR:/usr/local/share/geneweb/share/data \
 	 -v $LOGDIR:/usr/local/share/geneweb/log \
+	 --restart always \
 	 -l raver/geneweb \
 	 --name geneweb \
 	 raver/geneweb:latest

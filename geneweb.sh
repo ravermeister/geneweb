@@ -1,8 +1,8 @@
 #!/bin/sh
 
-LOGDIR=$(dirname $(readlink -f '$0'))/log
-CONFDIR=$(dirname $(readlink -f '$0'))/config
-DATADIR=$(dirname $(readlink -f '$0'))/data
+LOGDIR=$(dirname $(readlink -f $0))/log
+CONFDIR=$(dirname $(readlink -f $0))/config
+DATADIR=$(dirname $(readlink -f $0))/data
 
 GWD_PORT=2317
 GWSETUP_PORT=2316
@@ -32,6 +32,7 @@ start() {
 	 -v $CONFDIR:/usr/local/share/geneweb/etc \
 	 -v $DATADIR:/usr/local/share/geneweb/share/data \
 	 -v $LOGDIR:/usr/local/share/geneweb/log \
+	 --restart always \
 	 -l raver/geneweb \
 	 --name geneweb \
 	 raver/geneweb:latest

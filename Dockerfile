@@ -1,6 +1,3 @@
-ARG FORCE_GW_DL="false"
-ARG FORCE_OPAM_UP="false"
-
 From arm64v8/alpine
 MAINTAINER ravermeister <jonny@rimkus.it>
 
@@ -21,16 +18,15 @@ RUN mkdir etc &&\
  mkdir log &&\
  mkdir tmp
 
+ARG FORCE_OPAM_UP="false"
 RUN opam init -y --disable-sandboxing
-ARG FORCE_OPAM_UP="1"
 RUN eval $(opam env) && opam update -a -y
-ARG FORCE_OPAM_UP="2"
 RUN eval $(opam env) && opam upgrade -a -y
 RUN eval $(opam env) && opam switch create "$OPAM_VERSION"
 RUN eval $(opam env) && opam install -y --unlock-base camlp5 cppo dune jingoo\
  markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson
 
-ARG FORCE_GW_DL="true"
+ARG FORCE_GW_DL="false"
 RUN eval $(opam env) && opam pin add -y geneweb-bin -k git https://github.com/geneweb/geneweb --no-action
 RUN eval $(opam env) && opam -y depext geneweb-bin
 RUN eval $(opam env) && opam install -y geneweb-bin

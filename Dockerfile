@@ -1,4 +1,6 @@
 ARG FORCE_GW_DL="false"
+ARG FORCE_OPAM_UP="false"
+ENV OPAM_VERSION="4.10"
 
 From arm64v8/alpine
 MAINTAINER ravermeister <jonny@rimkus.it>
@@ -20,9 +22,10 @@ RUN mkdir etc &&\
  mkdir tmp
 
 RUN opam init -y --disable-sandboxing
+ARG FORCE_OPAM_UP="true"
 RUN eval $(opam env) && opam update -a -y
 RUN eval $(opam env) && opam upgrade -a -y
-RUN eval $(opam env) && opam switch create 4.10.0
+RUN eval $(opam env) && opam switch create $OPAM_VERSION
 RUN eval $(opam env) && opam install -y --unlock-base camlp5 cppo dune jingoo\
  markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson
 

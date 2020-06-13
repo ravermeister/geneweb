@@ -47,9 +47,23 @@ status(){
 	docker ps
 }
 
+update(){
+	echo -n "stopping..."
+	stop 2>&1 >/dev/null
+	echo "done"
+
+	setup
+
+	echo -n "starting..."
+	start 2>&1 >/dev/null
+	echo "done"
+
+	status
+}
+
 usage(){
 	echo "$(basename $0) build [--force]"
-	echo "$(basename $0) setup|start|stop|restart|status"
+	echo "$(basename $0) setup|start|stop|restart|status|update"
 }
 
 case $1 in
@@ -86,6 +100,10 @@ case $1 in
 		start
 		echo "Done"
 		status
+	;;
+
+	update)
+		update
 	;;
 
 	status)

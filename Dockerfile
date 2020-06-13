@@ -19,12 +19,13 @@ RUN mkdir etc &&\
  mkdir log &&\
  mkdir tmp
 
+ENV OPAM_VERSION="4.10"
 RUN opam init -y --disable-sandboxing
 ARG FORCE_OPAM_UP="1"
 RUN eval $(opam env) && opam update -a -y
 ARG FORCE_OPAM_UP="2"
-RUN eval $(opam env) && opam upgrade -a -y
-RUN eval $(opam env) && opam switch create 4.10
+RUN eval $(opam env) && opam upgrade -a -y "$OPAM_VERSION"
+RUN eval $(opam env) && opam switch create "$OPAM_VERSION"
 RUN eval $(opam env) && opam install -y --unlock-base camlp5 cppo dune jingoo\
  markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson
 

@@ -1,10 +1,10 @@
 ARG FORCE_GW_DL="false"
 ARG FORCE_OPAM_UP="false"
-ENV OPAM_VERSION="4.10"
 
 From arm64v8/alpine
 MAINTAINER ravermeister <jonny@rimkus.it>
 
+ENV OPAM_VERSION "4.10"
 
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl make m4 unzip gcc\

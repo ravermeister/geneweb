@@ -1,6 +1,7 @@
 From arm64v8/alpine
-
 MAINTAINER ravermeister <jonny@rimkus.it>
+
+ENV OPAM_VERSION="4.10.0"
 
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl make m4 unzip gcc\
@@ -20,7 +21,7 @@ RUN mkdir etc &&\
 RUN opam init -y --disable-sandboxing
 RUN eval $(opam env) && opam update -a -y
 RUN eval $(opam env) && opam upgrade -a -y
-RUN eval $(opam env) && opam switch create 4.10.0
+RUN eval $(opam env) && opam switch create "$OPAM_VERSION"
 RUN eval $(opam env) && opam install -y --unlock-base camlp5 cppo dune jingoo\
  markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson
 

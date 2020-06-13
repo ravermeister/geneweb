@@ -22,8 +22,9 @@ RUN mkdir etc &&\
  mkdir tmp
 
 RUN opam init -y --disable-sandboxing
-ARG FORCE_OPAM_UP="true"
+ARG FORCE_OPAM_UP="1"
 RUN eval $(opam env) && opam update -a -y
+ARG FORCE_OPAM_UP="2"
 RUN eval $(opam env) && opam upgrade -a -y
 RUN eval $(opam env) && opam switch create $OPAM_VERSION
 RUN eval $(opam env) && opam install -y --unlock-base camlp5 cppo dune jingoo\

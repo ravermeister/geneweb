@@ -25,7 +25,7 @@ RUN eval $(opam env) && opam switch create "$OPAM_VERSION"
 RUN eval $(opam env) && opam install -y --unlock-base camlp5 cppo dune jingoo\
  markup ounit uucp unidecode ocurl piqi piqilib redis redis-sync yojson
 
-RUN eval $(opam env) && opam pin add -y geneweb-bin -k git https://github.com/geneweb/geneweb --no-action
+RUN eval $(opam env) && opam pin add -y geneweb-bin -k git https://github.com/geneweb/geneweb#master --no-action
 RUN eval $(opam env) && opam -y depext geneweb-bin
 RUN eval $(opam env) && opam install -y geneweb-bin
 

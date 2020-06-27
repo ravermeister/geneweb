@@ -26,13 +26,13 @@ RUN eval $(opam env) && opam install -y --unlock-base camlp5 cppo dune jingoo\
  markup ounit uucp uunf unidecode ocurl piqi piqilib redis redis-sync yojson
 
 RUN eval $(opam env) && opam pin add -y geneweb-bin -k git https://github.com/geneweb/geneweb#master --no-action
-WORKDIR .opam/4.10.0/.opam-switch/build/geneweb-bin.~dev
-RUN git pull
-RUN git branch --set-upstream-to=origin/master master
-RUN git pull
 RUN eval $(opam env) && opam -y depext geneweb-bin
 RUN eval $(opam env) && opam install -y geneweb-bin
 
+WORKDIR .opam/4.10.0/.opam-switch/build/geneweb-bin.~dev
+RUN git fetch
+RUN git branch --set-upstream-to=origin/master master
+RUN git pull
 RUN eval $(opam env) && ocaml ./configure.ml --api
 RUN eval $(opam env) && make clean distrib
 RUN mv distribution /usr/local/share/geneweb/share/dist

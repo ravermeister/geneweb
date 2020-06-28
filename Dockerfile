@@ -30,8 +30,8 @@ RUN eval $(opam env) && opam -y depext geneweb-bin
 RUN eval $(opam env) && opam install -y geneweb-bin
 
 WORKDIR .opam/4.10.0/.opam-switch/build/geneweb-bin.~dev
-RUN test -f distribution/commit.txt && rm -f distribution/commit.txt
-RUN test -f hd/etc/version.txt && rm -f hd/etc/version.txt
+RUN rm -f distribution/commit.txt
+RUN rm -f hd/etc/version.txt
 RUN eval $(opam env) && ocaml ./configure.ml --api
 RUN eval $(opam env) && make clean distrib
 RUN mv distribution /usr/local/share/geneweb/share/dist

@@ -33,6 +33,7 @@ RUN eval $(opam env) && opam install -y geneweb-bin
 WORKDIR .opam/4.10.0/.opam-switch/build/geneweb-bin.~dev
 RUN rm -f distribution/commit.txt
 RUN rm -f hd/etc/version.txt
+RUN git fetch
 RUN git branch --set-upstream-to=origin/master master
 RUN git pull
 RUN eval $(opam env) && ocaml ./configure.ml --api

@@ -34,12 +34,7 @@ WORKDIR .opam/4.10.0/.opam-switch/build/geneweb-bin.~dev
 RUN git fetch
 RUN git branch --set-upstream-to=origin/master master
 RUN git pull
-RUN eval $(opam env) && ocaml ./configure.ml --api
-RUN eval $(opam env) && make clean distrib
-## warum zur hölle nimmer immer einen Commit von 2020-04-16???
-RUN git pull
-RUN rm -f distribution/commit.txt
-RUN rm -f hd/etc/version.txt
+RUN git log -1
 RUN eval $(opam env) && ocaml ./configure.ml --api
 RUN eval $(opam env) && make clean distrib
 RUN mv distribution /usr/local/share/geneweb/share/dist

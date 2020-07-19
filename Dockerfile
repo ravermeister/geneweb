@@ -30,7 +30,7 @@ RUN eval $(opam env) && opam -y depext geneweb-bin
 RUN eval $(opam env) && opam install -y geneweb-bin
 
 WORKDIR ".opam/$OPAM_VERSION/.opam-switch/build/geneweb-bin.~dev"
-RUN git fetch && git branch --set-upstream-to=origin/master master && git pull
+RUN git fetch && git branch --set-upstream-to=origin/master master && git pull && git log -1
 RUN eval $(opam env) && ocaml ./configure.ml --api
 RUN eval $(opam env) && make clean && make distrib
 RUN mv distribution /usr/local/share/geneweb/share/dist

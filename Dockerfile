@@ -22,21 +22,17 @@ RUN opam init -y --disable-sandboxing
 RUN eval $(opam env) && opam update -a -y
 RUN eval $(opam env) && opam upgrade -a -y
 RUN eval $(opam env) && opam switch create "$OPAM_VERSION"
-RUN eval $(opam env) && opam install -y --unlock-base camlp5 cppo dune jingoo\
+RUN eval $(opam env) && opam install -y --unlock-base camlp5.7.11 cppo dune jingoo\
  markup ounit uucp uunf unidecode ocurl piqi piqilib redis redis-sync yojson
 
-RUN rm -f .opam/4.10.0/.opam-switch/build/geneweb-bin.~dev
 RUN eval $(opam env) && opam pin add -y geneweb-bin -k git https://github.com/geneweb/geneweb#master --no-action
 RUN eval $(opam env) && opam -y depext geneweb-bin
 RUN eval $(opam env) && opam install -y geneweb-bin
 
-WORKDIR .opam/4.10.0/.opam-switch/build/geneweb-bin.~dev
-RUN git fetch
-RUN git branch --set-upstream-to=origin/master master
-RUN git pull
-RUN git log -1
+WORKDIR ".opam/$OPAM_VERSION/.opam-switch/build/geneweb-bin.~dev"
+RUN git fetch && git branch --set-upstream-to=origin/master master && git pull && git log -1
 RUN eval $(opam env) && ocaml ./configure.ml --api
-RUN eval $(opam env) && make clean distrib
+RUN eval $(opam env) && make clean && make distrib
 RUN mv distribution /usr/local/share/geneweb/share/dist
 
 WORKDIR /usr/local/share/geneweb

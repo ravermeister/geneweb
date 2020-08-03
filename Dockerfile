@@ -32,7 +32,7 @@ RUN eval $(opam env) && opam install -y geneweb-bin
 WORKDIR ".opam/$OPAM_VERSION/.opam-switch/build/geneweb-bin.~dev"
 RUN git fetch && git branch --set-upstream-to=origin/master master && git pull && git log -1
 RUN eval $(opam env) && ocaml ./configure.ml --api && make clean && make distrib
-RUN mv distribution /usr/local/share/geneweb/share/dist
+RUN cat distribution/gw/etc/version.txt && mv distribution /usr/local/share/geneweb/share/dist
 
 WORKDIR /usr/local/share/geneweb
 ADD assets/gwsetup_only etc/gwsetup_only

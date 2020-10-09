@@ -4,7 +4,8 @@ before_script:
 build-release:
   stage: build
   tags:
-    - armhf-shell
+    - armhf
+    - shell
   script:
     - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE" .
   only:

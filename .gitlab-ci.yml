@@ -3,7 +3,9 @@ before_script:
 
 build-release:
   stage: build
-  tags: armhf,shell
+  tags: 
+    - armhf
+    - shell
   script:
     - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE" .
   only:
@@ -12,7 +14,8 @@ build-release:
 publish-release:
   stage: deploy
   tags:
-    - armhf,shell
+    - armhf
+    - shell
   script:
     - docker push "$CI_REGISTRY_IMAGE"
   only:
@@ -22,7 +25,8 @@ publish-release:
 build-feature:
   stage: build
   tags:
-    - armhf,shell
+    - armhf
+    - shell
   script:
     - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
   only:
@@ -31,7 +35,8 @@ build-feature:
 publish-feature:
   stage: deploy
   tags:
-    - armhf,shell
+    - armhf
+    - shell
   script:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
@@ -41,7 +46,8 @@ publish-feature:
 build-hotfix:
   stage: build
   tags:
-    - armhf-shell
+    - armhf
+    - shell
   script:
     - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
@@ -51,7 +57,8 @@ build-hotfix:
 publish-hotfix:
   stage: deploy
   tags:
-    - armhf,shell
+    - armhf
+    - shell
   script:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
@@ -61,7 +68,8 @@ publish-hotfix:
 build-develop:
   stage: build
   tags:
-    - armhf,shell
+    - armhf
+    - shell
   script:
     - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
   only:

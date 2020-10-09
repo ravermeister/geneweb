@@ -63,7 +63,8 @@ publish-hotfix:
 build-develop:
   stage: build
   tags:
-    - armhf-shell
+    - armhf
+    - shell
   script:
     - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
   only:

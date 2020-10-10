@@ -5,7 +5,8 @@ ENV OPAM_VERSION="4.10.0"
 
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl make m4 unzip gcc\
- pkgconfig gmp-dev perl-dev git subversion mercurial rsync\
+ pkgconfig gmp-dev perl-dev perl-ipc-system-simple\ 
+ perl-string-shellquote git subversion mercurial rsync\
  curl-dev musl-dev redis protoc opam
 
 RUN adduser -D -h /usr/local/share/geneweb -s /bin/bash geneweb geneweb

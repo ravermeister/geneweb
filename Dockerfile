@@ -23,7 +23,7 @@ RUN opam init -y --disable-sandboxing
 RUN eval $(opam env) && opam update -a -y
 RUN eval $(opam env) && opam upgrade -a -y
 RUN eval $(opam env) && opam switch create "$OPAM_VERSION"
-RUN eval $(opam env) && opam install -y --unlock-base camlp5.7.11 cppo dune jingoo\
+RUN eval $(opam env) && opam install -y --unlock-base camlp5.7.13 cppo dune jingoo\
  markup ounit uucp uunf unidecode ocurl piqi piqilib redis redis-sync yojson
 
 RUN eval $(opam env) && opam pin add -y geneweb-bin -k git https://github.com/geneweb/geneweb#master --no-action
@@ -33,15 +33,13 @@ RUN eval $(opam env) && opam install -y geneweb-bin
 WORKDIR ".opam/$OPAM_VERSION/.opam-switch/build/geneweb-bin.~dev"
 RUN git fetch && git branch --set-upstream-to=origin/master master && git pull && git log -1
 RUN eval $(opam env) && ocaml ./configure.ml --api && make clean && make distrib
-RUN rm -f /usr/local/share/geneewb/share/dist && mv distribution /usr/local/share/geneweb/share/dist
+RUN rm -f /usr/local/share/geneweb/share/dist && mv distribution /usr/local/share/geneweb/share/dist
 
 WORKDIR /usr/local/share/geneweb
 RUN mv share/dist/bases share/data
 ADD assets/gwsetup_only etc/gwsetup_only
 ADD assets/geneweb-launch.sh bin/geneweb-launch.sh
 ADD assets/redis.conf /etc/redis.conf
-
-
 
 RUN cat share/dist/gw/etc/version.txt
 

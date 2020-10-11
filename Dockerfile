@@ -28,7 +28,8 @@ RUN eval $(opam env) && opam install -y --unlock-base camlp5.7.13 cppo dune jing
 
 WORKDIR ".opam/$OPAM_VERSION/.opam-switch/build"
 RUN git clone https://github.com/geneweb/geneweb geneweb
-RUN cd geneweb && git log -1
+WORKDIR ".opam/$OPAM_VERSION/.opam-switch/build/geneweb"
+RUN git log -1
 RUN eval $(opam env) && ocaml ./configure.ml --api && make clean distrib
 RUN rm -f /usr/local/share/geneweb/share/dist && mv distribution /usr/local/share/geneweb/share/dist
 

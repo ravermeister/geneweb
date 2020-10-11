@@ -26,16 +26,9 @@ RUN eval $(opam env) && opam switch create "$OPAM_VERSION"
 RUN eval $(opam env) && opam install -y --unlock-base camlp5.7.13 cppo dune jingoo\
  markup ounit uucp uunf unidecode ocurl piqi piqilib redis redis-sync yojson
 
-USER root:root
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build"
-RUN rm -rf geneweb &&\
- mkdir geneweb &&\
- chown -R geneweb:geneweb geneweb &&\
- chmod -R u+rwx geneweb
-
-USER geneweb:geneweb
+RUN git clone https://github.com/geneweb/geneweb geneweb
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build/geneweb"
-RUN git clone https://github.com/geneweb/geneweb . 
 RUN git log -1
 RUN eval $(opam env) && ocaml ./configure.ml --api && make clean distrib
 RUN rm -f /usr/local/share/geneweb/share/dist && mv distribution /usr/local/share/geneweb/share/dist

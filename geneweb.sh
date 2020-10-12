@@ -8,18 +8,21 @@ GWD_PORT=2317
 GWSETUP_PORT=2316
 GWAPI_PORT=2322
 
+DOCKER_IMAGE="ravermeister/armhf-geneweb"
+
 build() {
 	if [ "$1" = "--force" ]; then
-		docker build --no-cache -t raver/geneweb .
+		docker build --no-cache -t "$DOCKER_IMAGE" .
 	else
-		docker build -t raver/geneweb .
+		docker build -t "$DOCKER_IMAGE" .
 	fi
 	mkdir -p $DATADIR
 	mkdir -p $LOGDIR
 }
 
 setup(){
-	docker pull ravermeister/armhf-geneweb
+	docker rmi "$DOCKER_IMAGE"
+	docker pull "$DOCKER_IMAGE"
 	mkdir -p $DATADIR
 	mkdir -p $LOGDIR
 }
@@ -33,9 +36,8 @@ start() {
 	 -v $DATADIR:/usr/local/share/geneweb/share/data \
 	 -v $LOGDIR:/usr/local/share/geneweb/log \
 	 --restart always \
-	 -l raver/geneweb \
 	 --name geneweb \
-	 raver/geneweb:latest
+	 "$DOCKER_IMAGE"
 }
 
 stop() {

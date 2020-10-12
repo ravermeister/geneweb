@@ -9,7 +9,10 @@ RUN apk update && apk add --no-cache --update bash ncurses\
  perl-string-shellquote git subversion mercurial rsync\
  curl-dev musl-dev redis protoc opam
 
-RUN adduser -D -h /usr/local/share/geneweb -s /bin/bash geneweb geneweb
+RUN rm -rf /usr/local/share/geneweb &&\
+ mkdir -p /usr/local/share/geneweb &&\
+ adduser -D -h /usr/local/share/geneweb -s /bin/bash geneweb geneweb &&\
+ chown -R geneweb:geneweb /usr/local/share/geneweb
 
 USER geneweb:geneweb
 WORKDIR /usr/local/share/geneweb
@@ -19,27 +22,25 @@ RUN mkdir etc &&\
  mkdir log &&\
  mkdir tmp
 
-RUN opam init -y --disable-sandboxing
-RUN eval $(opam env) && opam update -a -y
-RUN eval $(opam env) && opam upgrade -a -y
-RUN eval $(opam env) && opam switch create "$OPAM_VERSION"
-RUN eval $(opam env) && opam install -y --unlock-base camlp5.7.13 cppo dune jingoo\
+RUN opam init -y --disable-sandboxing &&\
+ eval $(opam env) && opam update -a -y &&\
+ eval $(opam env) && opam upgrade -a -y &&\
+ eval $(opam env) && opam switch create "$OPAM_VERSION" &&\
+ eval $(opam env) && opam install -y --unlock-base camlp5.7.13 cppo dune jingoo\
  markup ounit uucp uunf unidecode ocurl piqi piqilib redis redis-sync yojson
 
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build"
 RUN git clone https://github.com/geneweb/geneweb geneweb
+
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build/geneweb"
-RUN git log -1
 RUN eval $(opam env) && ocaml ./configure.ml --api && make clean distrib
-RUN rm -f /usr/local/share/geneweb/share/dist && mv distribution /usr/local/share/geneweb/share/dist
+RUN rm -rf /usr/local/share/geneweb/share/dist && mv distribution /usr/local/share/geneweb/share/dist
 
 WORKDIR /usr/local/share/geneweb
 RUN mv share/dist/bases share/data
 ADD assets/gwsetup_only etc/gwsetup_only
 ADD assets/geneweb-launch.sh bin/geneweb-launch.sh
 ADD assets/redis.conf /etc/redis.conf
-
-RUN cat share/dist/gw/etc/version.txt
 
 USER root
 ENTRYPOINT bin/geneweb-launch.sh >/dev/null 2>&1

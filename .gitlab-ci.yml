@@ -1,5 +1,7 @@
 before_script:
   - echo -n "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_SERVER"
+  - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H-%M)
+  - export CI_IMAGE="ravermeister/armhf-geneweb"
 
 build-release:
   stage: build
@@ -7,7 +9,9 @@ build-release:
     - arm64
     - shell
   script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE" .
+    - docker build --pull --no-cache -t "$CI_IMAGE:$GIT_COMMIT_DATE" .
+    - docker tag "$CI_IMAGE:$GIT_COMMIT_DATE" "$CI_REGISTRY_IMAGE:$GIT_COMMIT_DATE"
+    - docker tag "$CI_IMAGE:$GIT_COMMIT_DATE" "$CI_REGISTRY_IMAGE:latest"
   only:
     - /^release\/.*$/
 
@@ -17,7 +21,8 @@ publish-release:
     - arm64
     - shell
   script:
-    - docker push "$CI_REGISTRY_IMAGE"
+    - docker push "$CI_REGISTRY_IMAGE:$GIT_COMMIT_DATE"
+    - docker push "$CI_REGISTRY_IMAGE:latest"
   only:
     - /^release\/.*$/
 ###########################
@@ -28,7 +33,9 @@ build-feature:
     - arm64
     - shell
   script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - docker build --pull --no-cache -t "$CI_IMAGE:$GIT_COMMIT_DATE" .
+    - docker tag "$CI_IMAGE:$GIT_COMMIT_DATE" "$CI_REGISTRY_IMAGE:$GIT_COMMIT_DATE"
+    - docker tag "$CI_IMAGE:$GIT_COMMIT_DATE" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^feature\/.*$/
 
@@ -38,6 +45,7 @@ publish-feature:
     - arm64
     - shell
   script:
+    - docker push "$CI_REGISTRY_IMAGE:$GIT_COMMIT_DATE"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^feature\/.*$/
@@ -49,8 +57,9 @@ build-hotfix:
     - arm64
     - shell
   script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    - docker build --pull --no-cache -t "$CI_IMAGE:$GIT_COMMIT_DATE" .
+    - docker tag "$CI_IMAGE:$GIT_COMMIT_DATE" "$CI_REGISTRY_IMAGE:$GIT_COMMIT_DATE"
+    - docker tag "$CI_IMAGE:$GIT_COMMIT_DATE" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^hotfix\/.*$/
     
@@ -60,6 +69,7 @@ publish-hotfix:
     - arm64
     - shell
   script:
+    - docker push "$CI_REGISTRY_IMAGE:$GIT_COMMIT_DATE"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^hotfix\/.*$/
@@ -71,7 +81,9 @@ build-develop:
     - arm64
     - shell
   script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - docker build --pull --no-cache -t "$CI_IMAGE:$GIT_COMMIT_DATE" .
+    - docker tag "$CI_IMAGE:$GIT_COMMIT_DATE" "$CI_REGISTRY_IMAGE:$GIT_COMMIT_DATE"
+    - docker tag "$CI_IMAGE:$GIT_COMMIT_DATE" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^develop\/.*$/
     
@@ -81,6 +93,7 @@ publish-develop:
     - arm64
     - shell
   script:
+    - docker push "$CI_REGISTRY_IMAGE:$GIT_COMMIT_DATE"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^develop\/.*$/

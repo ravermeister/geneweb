@@ -21,7 +21,7 @@ build() {
 }
 
 setup(){
-	docker rmi "$DOCKER_IMAGE"
+	docker rmi "$DOCKER_IMAGE" >/dev/null 2>&1
 	docker pull "$DOCKER_IMAGE"
 	mkdir -p $DATADIR
 	mkdir -p $LOGDIR

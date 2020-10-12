@@ -1,6 +1,7 @@
 # docker-geneweb
 Arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository").
 The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/armhf-geneweb)  
+[![](https://images.microbadger.com/badges/version/ravermeister/armhf-geneweb.svg)](https://microbadger.com/images/ravermeister/armhf-geneweb "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/ravermeister/armhf-geneweb.svg)](https://microbadger.com/images/ravermeister/armhf-geneweb "Get your own image badge on microbadger.com") [![Docker Pulls](https://img.shields.io/docker/pulls/ravermeister/armhf-geneweb.svg)](https://hub.docker.com/r/ravermeister/armhf-geneweb/)
 
 | Develop | Master |
 |---     |  ---    |

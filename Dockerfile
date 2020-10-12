@@ -1,7 +1,7 @@
 From arm64v8/alpine
 MAINTAINER ravermeister <jonny@rimkus.it>
 
-ENV OPAM_VERSION="4.10.0"
+ENV OPAM_VERSION="4.11.1"
 
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl make m4 unzip gcc\

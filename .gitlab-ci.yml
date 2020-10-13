@@ -55,4 +55,5 @@ publish-develop:
     - /^develop\/.*$/
     - /^feature\/.*$/
     - /^hotfix\/.*$/
+
 ###########################

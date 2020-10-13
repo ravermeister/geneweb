@@ -1,7 +1,7 @@
 before_script:
   - echo -n "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_SERVER"
   - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
-  - export BULD_DATE=$(date +%Y-%m-%d.%H%M)
+  - export BUILD_DATE=$(date +%Y-%m-%d.%H%M)
   - export CI_IMAGE="ravermeister/armhf-geneweb"
 
 build-release:

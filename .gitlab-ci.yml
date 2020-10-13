@@ -4,12 +4,19 @@ before_script:
   - export BUILD_DATE=$(date +%Y-%m-%d.%H%M)
   - export CI_IMAGE="ravermeister/armhf-geneweb"
 
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - workdir/
+
 build-release:
   stage: build
   tags: 
     - arm64
     - shell
   script:
+    - echo -n $BUILD_DATE >workdir/build_date
+    - echo -n $GIT_COMMIT_DATE >workdir/git_commit_date
     - docker build --pull --no-cache -t "$CI_IMAGE:$BUILD_DATE" .
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$BUILD_DATE"
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:latest"
@@ -22,6 +29,8 @@ publish-release:
     - arm64
     - shell
   script:
+    - export BUILD_DATE=$(cat workdir/build_date)
+    - export GIT_COMMIT_DATE=$(cat workdir/git_commit_date)
     - docker push "$CI_REGISTRY_IMAGE:$BUILD_DATE"
     - docker push "$CI_REGISTRY_IMAGE:latest"
   only:
@@ -35,6 +44,8 @@ build-develop:
     - arm64
     - shell
   script:
+    - echo -n $BUILD_DATE >workdir/build_date
+    - echo -n $GIT_COMMIT_DATE >workdir/git_commit_date
     - docker build --pull --no-cache -t "$CI_IMAGE:$BUILD_DATE" .
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$BUILD_DATE"
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
@@ -49,6 +60,8 @@ publish-develop:
     - arm64
     - shell
   script:
+    - export BUILD_DATE=$(cat workdir/build_date)
+    - export GIT_COMMIT_DATE=$(cat workdir/git_commit_date)
     - docker push "$CI_REGISTRY_IMAGE:$BUILD_DATE"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:

@@ -1,5 +1,5 @@
 From arm64v8/alpine
-MAINTAINER ravermeister <jonny@rimkus.it>
+LABEL maintainer="Jonny Rimkus <jonny@rimkus.it>"
 
 ENV OPAM_VERSION="4.11.1"
 

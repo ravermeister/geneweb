@@ -15,10 +15,11 @@ build-release:
     - arm64
     - shell
   script:
+    - rm -rf cachedir
     - mkdir -p cachedir
     - echo -n $BUILD_DATE >cachedir/build_date
     - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
-    - docker build --pull --no-cache -t "$CI_IMAGE:$BUILD_DATE" .
+    - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:$BUILD_DATE" .
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$BUILD_DATE"
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:latest"
   only:
@@ -45,10 +46,11 @@ build-develop:
     - arm64
     - shell
   script:
+    - rm -rf cachedir
     - mkdir -p cachedir
     - echo -n $BUILD_DATE >cachedir/build_date
     - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
-    - docker build --pull --no-cache -t "$CI_IMAGE:$BUILD_DATE" .
+    - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:$BUILD_DATE" .
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$BUILD_DATE"
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:

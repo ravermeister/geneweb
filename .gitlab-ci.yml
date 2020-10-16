@@ -1,79 +1,76 @@
 before_script:
   - echo -n "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_SERVER"
+  - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
+  - export BUILD_DATE=$(date +%Y-%m-%d.%H%M)
+  - export CI_IMAGE="ravermeister/armhf-geneweb"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - cachedir/
 
 build-release:
   stage: build
-  tags:
-    - armhf-shell
+  tags: 
+    - arm64
+    - shell
   script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE" .
+    - rm -rf cachedir
+    - mkdir -p cachedir
+    - echo -n $BUILD_DATE >cachedir/build_date
+    - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
+    - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:$BUILD_DATE" .
+    - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$BUILD_DATE"
+    - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:latest"
   only:
     - /^release\/.*$/
 
 publish-release:
   stage: deploy
   tags:
-    - armhf-shell
+    - arm64
+    - shell
   script:
-    - docker push "$CI_REGISTRY_IMAGE"
+    - export BUILD_DATE=$(cat cachedir/build_date)
+    - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
+    - docker push "$CI_REGISTRY_IMAGE:$BUILD_DATE"
+    - docker push "$CI_REGISTRY_IMAGE:latest"
   only:
     - /^release\/.*$/
-###########################
 
-build-feature:
-  stage: build
-  tags:
-    - armhf-shell
-  script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
-  only:
-    - /^feature\/.*$/
-
-publish-feature:
-  stage: deploy
-  tags:
-    - armhf-shell
-  script:
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-  only:
-    - /^feature\/.*$/
-###########################
-
-build-hotfix:
-  stage: build
-  tags:
-    - armhf-shell
-  script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-  only:
-    - /^hotfix\/.*$/
-    
-publish-hotfix:
-  stage: deploy
-  tags:
-    - armhf-shell
-  script:
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-  only:
-    - /^hotfix\/.*$/
 ###########################
 
 build-develop:
   stage: build
   tags:
-    - armhf-shell
+    - arm64
+    - shell
   script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - rm -rf cachedir
+    - mkdir -p cachedir
+    - echo -n $BUILD_DATE >cachedir/build_date
+    - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
+    - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:$BUILD_DATE" .
+    - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$BUILD_DATE"
+    - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^develop\/.*$/
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
     
 publish-develop:
   stage: deploy
   tags:
-    - armhf-shell
+    - arm64
+    - shell
   script:
+    - export BUILD_DATE=$(cat cachedir/build_date)
+    - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
+    - docker push "$CI_REGISTRY_IMAGE:$BUILD_DATE"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^develop\/.*$/
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
 ###########################

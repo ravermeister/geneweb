@@ -35,6 +35,7 @@ publish-release:
     - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
     - docker push "$CI_REGISTRY_IMAGE:$BUILD_DATE"
     - docker push "$CI_REGISTRY_IMAGE:latest"
+    - curl -sX POST https://hooks.microbadger.com/images/ravermeister/armhf-geneweb/zR5ew-MN8TYubBw-j4jMzVEcMWg=
   only:
     - /^release\/.*$/
 
@@ -68,6 +69,7 @@ publish-develop:
     - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
     - docker push "$CI_REGISTRY_IMAGE:$BUILD_DATE"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    - curl -sX POST https://hooks.microbadger.com/images/ravermeister/armhf-geneweb/zR5ew-MN8TYubBw-j4jMzVEcMWg=
   only:
     - /^develop\/.*$/
     - /^feature\/.*$/

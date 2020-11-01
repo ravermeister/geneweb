@@ -1,17 +1,19 @@
 before_script:
   - echo -n "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_SERVER"
+  - export GENEWEB_COMMIT_URL="https://api.github.com/repos/geneweb/geneweb/commits?sha=master&per_page=1"
+  - export GENEWEB_COMMIT_DATE="$(date '+%Y-%m-%d.%H%M' -d "$(curl -s $GENEWEB_COMMIT_URL | jq --raw-output '.[0].commit.committer.date')")"
   - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
-  - export BUILD_DATE=$(date +%Y-%m-%d.%H%M)
+  - export BUILD_DATE=$(date '+%Y-%m-%d.%H%M')
   - export CI_IMAGE="ravermeister/armhf-geneweb"
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-  - cachedir/
+    - cachedir/
 
 build-release:
   stage: build
-  tags: 
+  tags:
     - arm64
     - shell
   script:
@@ -19,8 +21,9 @@ build-release:
     - mkdir -p cachedir
     - echo -n $BUILD_DATE >cachedir/build_date
     - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
+    - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
     - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:$BUILD_DATE" .
-    - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$BUILD_DATE"
+    - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:latest"
   only:
     - /^release\/.*$/
@@ -33,7 +36,8 @@ publish-release:
   script:
     - export BUILD_DATE=$(cat cachedir/build_date)
     - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
-    - docker push "$CI_REGISTRY_IMAGE:$BUILD_DATE"
+    - export GENEWEB_COMMIT_DATE=$(cat cachedir/geneweb_commit_date)
+    - docker push "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
     - docker push "$CI_REGISTRY_IMAGE:latest"
     - curl -sX POST https://hooks.microbadger.com/images/ravermeister/armhf-geneweb/zR5ew-MN8TYubBw-j4jMzVEcMWg=
   only:
@@ -51,14 +55,15 @@ build-develop:
     - mkdir -p cachedir
     - echo -n $BUILD_DATE >cachedir/build_date
     - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
+    - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
     - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:$BUILD_DATE" .
-    - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$BUILD_DATE"
+    - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
     - docker tag "$CI_IMAGE:$BUILD_DATE" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - /^develop\/.*$/
     - /^feature\/.*$/
     - /^hotfix\/.*$/
-    
+
 publish-develop:
   stage: deploy
   tags:
@@ -67,7 +72,8 @@ publish-develop:
   script:
     - export BUILD_DATE=$(cat cachedir/build_date)
     - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
-    - docker push "$CI_REGISTRY_IMAGE:$BUILD_DATE"
+    - export GENEWEB_COMMIT_DATE=$(cat cachedir/geneweb_commit_date)
+    - docker push "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
     - curl -sX POST https://hooks.microbadger.com/images/ravermeister/armhf-geneweb/zR5ew-MN8TYubBw-j4jMzVEcMWg=
   only:

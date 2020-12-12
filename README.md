@@ -3,11 +3,6 @@ Arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb 
 The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/armhf-geneweb)  
 [![](https://images.microbadger.com/badges/version/ravermeister/armhf-geneweb.svg)](https://microbadger.com/images/ravermeister/armhf-geneweb "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/ravermeister/armhf-geneweb.svg)](https://microbadger.com/images/ravermeister/armhf-geneweb "Get your own image badge on microbadger.com") [![Docker Pulls](https://img.shields.io/docker/pulls/ravermeister/armhf-geneweb.svg)](https://hub.docker.com/r/ravermeister/armhf-geneweb/)
 
-| Develop | Master |
-|---     |  ---    |
-| [![pipeline status](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/badges/develop/master/pipeline.svg)](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/commits/develop/master) | [![pipeline status](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/badges/release/master/pipeline.svg)](https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker/-/commits/release/master) |
-
-
 ## Quickstart
 ```bash
 git clone https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker.git geneweb

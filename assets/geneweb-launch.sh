@@ -33,6 +33,8 @@ init() {
 		chown root:root /etc/redis.conf
 		chmod +r /etc/redis.conf
 	fi
+
+	/usr/sbin/rsyslogd >/dev/null 2>&1
 }
 
 ## runs as geneweb

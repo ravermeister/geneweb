@@ -7,12 +7,13 @@ RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl make m4 unzip gcc\
  pkgconfig gmp-dev perl-dev perl-ipc-system-simple\ 
  perl-string-shellquote git subversion mercurial rsync\
- curl-dev musl-dev redis protoc opam
+ curl-dev musl-dev redis protoc opam rsyslog
 
 RUN rm -rf /usr/local/share/geneweb &&\
  mkdir -p /usr/local/share/geneweb &&\
  adduser -D -h /usr/local/share/geneweb -s /bin/bash geneweb geneweb &&\
- chown -R geneweb:geneweb /usr/local/share/geneweb
+ chown -R geneweb:geneweb /usr/local/share/geneweb &&\
+ /usr/sbin/rsyslog
 
 USER geneweb:geneweb
 WORKDIR /usr/local/share/geneweb

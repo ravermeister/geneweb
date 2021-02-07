@@ -1,6 +1,6 @@
 before_script:
   - echo -n "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_SERVER"
-  - export GENEWEB_COMMIT_URL="https://api.github.com/repos/geneweb/geneweb/commits?sha=master&per_page=1"
+  - export GENEWEB_COMMIT_URL="https://api.github.com/repos/hgouraud/geneweb/commits?sha=ipv6&per_page=1"
   - export GENEWEB_COMMIT_DATE="$(date '+%Y-%m-%d.%H%M' -d "$(curl -s $GENEWEB_COMMIT_URL | jq --raw-output '.[0].commit.committer.date')")"
   - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
   - export BUILD_DATE=$(date '+%Y-%m-%d.%H%M')

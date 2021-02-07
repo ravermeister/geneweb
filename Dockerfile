@@ -32,9 +32,10 @@ RUN opam init -y --disable-sandboxing &&\
  calendars syslog
 
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build"
-RUN git clone https://github.com/geneweb/geneweb geneweb
+RUN git clone https://github.com/hgouraud/geneweb.git geneweb
 
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build/geneweb"
+RUN git checkout ipv6
 RUN eval $(opam env) && ocaml ./configure.ml --api && make clean distrib
 RUN rm -rf /usr/local/share/geneweb/share/dist && mv distribution /usr/local/share/geneweb/share/dist
 

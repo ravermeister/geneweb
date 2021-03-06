@@ -8,7 +8,7 @@ RUN echo "@edgecommunity http://nl.alpinelinux.org/alpine/edge/community" >>/etc
  build-base linux-headers coreutils curl make m4 unzip gcc\
  pkgconfig gmp-dev perl-dev perl-ipc-system-simple\
  perl-string-shellquote git subversion mercurial rsync\
- curl-dev musl-dev redis protoc opam
+ curl-dev musl-dev redis protoc opam@edgecommunity
 
 RUN rm -rf /usr/local/share/geneweb &&\
  mkdir -p /usr/local/share/geneweb &&\

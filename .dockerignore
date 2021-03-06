@@ -1,0 +1,5 @@
+*.md
+.gitlab-ci.yml
+config/
+arm32/
+arm64/

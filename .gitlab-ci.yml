@@ -38,12 +38,12 @@ publish-release:
     - export BUILD_DATE=$(cat cachedir/build_date)
     - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
     - export GENEWEB_COMMIT_DATE=$(cat cachedir/geneweb_commit_date)
+#    - docker push "$CI_REGISTRY_IMAGE:arm32"
+    - docker push "$CI_REGISTRY_IMAGE:arm64"
 #    - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm32"
     - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm64"
 #    - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
     - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm64"
-#    - docker push "$CI_REGISTRY_IMAGE:arm32"
-    - docker push "$CI_REGISTRY_IMAGE:arm64"
     - docker manifest push -p "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
     - docker manifest push -p "$CI_REGISTRY_IMAGE:latest"
   only:

@@ -8,7 +8,7 @@ GWD_PORT=2317
 GWSETUP_PORT=2316
 GWAPI_PORT=2322
 
-DOCKER_IMAGE="ravermeister/armhf-geneweb"
+DOCKER_IMAGE="ravermeister/geneweb"
 
 build() {
 	if [ "$1" = "--force" ]; then

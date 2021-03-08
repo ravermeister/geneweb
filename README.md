@@ -39,9 +39,9 @@ docker run -d -t \
 -v $CONFDIR:/usr/local/share/geneweb/etc \
 -v $DATADIR:/usr/local/share/geneweb/share/data \
 -v $LOGDIR:/usr/local/share/geneweb/log \
--l raver/geneweb \
+--restart always \
 --name geneweb \
-raver/geneweb:latest
+ravermeister/geneweb
 ```
 
 for gwsetup you must edit the `$CONFDIR/gwsetup_only` file and 

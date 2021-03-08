@@ -1,11 +1,12 @@
 FROM arm32v7/alpine
+#FROM --platform linux/arm/v7 arm32v7/alpine
 LABEL maintainer="Jonny Rimkus <jonny@rimkus.it>"
 
 ENV OPAM_VERSION="4.11.1"
 
 RUN apk update && apk add --no-cache --update bash ncurses\
  build-base linux-headers coreutils curl make m4 unzip gcc\
- pkgconfig gmp-dev perl-dev perl-ipc-system-simple\
+ pkgconfig gmp-dev perl-dev perl-ipc-system-simple util-linux\
  perl-string-shellquote git subversion mercurial rsync\
  curl-dev musl-dev redis protoc opam
 
@@ -22,7 +23,7 @@ RUN mkdir etc &&\
  mkdir log &&\
  mkdir tmp
 
-RUN opam init -y --disable-sandboxing &&\
+RUN setarch armv7l && opam init -y --disable-sandboxing &&\
  eval $(opam env) && opam update -a -y &&\
  eval $(opam env) && opam upgrade -a -y &&\
  eval $(opam env) && opam switch create "$OPAM_VERSION" &&\

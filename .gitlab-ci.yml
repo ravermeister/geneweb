@@ -22,9 +22,9 @@ build-release:
     - echo -n $BUILD_DATE >cachedir/build_date
     - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
     - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
-#    - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
-    - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:arm64" -f arm64/dockerfile .
+#    - docker build --pull --no-cache --force-rm --compress --platform linux/arm/v7 -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
 #    - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
+    - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:arm64" -f arm64/dockerfile .
     - docker tag "$CI_IMAGE:arm64" "$CI_REGISTRY_IMAGE:arm64"
   only:
     - /^release\/.*$/

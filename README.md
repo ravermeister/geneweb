@@ -1,11 +1,10 @@
-# docker-geneweb
-Arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository").
-The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/armhf-geneweb)  
-[![](https://images.microbadger.com/badges/version/ravermeister/armhf-geneweb.svg)](https://microbadger.com/images/ravermeister/armhf-geneweb "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/ravermeister/armhf-geneweb.svg)](https://microbadger.com/images/ravermeister/armhf-geneweb "Get your own image badge on microbadger.com") [![Docker Pulls](https://img.shields.io/docker/pulls/ravermeister/armhf-geneweb.svg)](https://hub.docker.com/r/ravermeister/armhf-geneweb/)
+# geneweb
+arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository").
+The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/geneweb)  
 
 ## Quickstart
 ```bash
-git clone https://gitlab.rimkus.it/genealogy/geneweb-arm64-docker.git geneweb
+git clone https://gitlab.rimkus.it/web/geneweb.git geneweb
 cd geneweb
 ./geneweb.sh setup
 ./geneweb.sh start
@@ -31,7 +30,7 @@ echo "172.17.0.1" >$CONFDIR/gwsetup_only
 mkdir -p $DATADIR
 mkdir -p $LOGDIR
 # pull the image
-docker pull ravermeister/armhf-geneweb
+docker pull ravermeister/geneweb
 #run the image
 docker run -d -t \
 -p $GWD_PORT:2317 \

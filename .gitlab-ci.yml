@@ -22,9 +22,9 @@ build-release:
     - echo -n $BUILD_DATE >cachedir/build_date
     - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
     - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
-    - docker build --pull --no-cache --force-rm --compress --platform linux/arm/v7 -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
+#    - docker build --pull --no-cache --force-rm --compress --platform linux/arm/v7 -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
+#    - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
     - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:arm64" -f arm64/dockerfile .
-    - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
     - docker tag "$CI_IMAGE:arm64" "$CI_REGISTRY_IMAGE:arm64"
   only:
     - /^release\/.*$/
@@ -38,11 +38,11 @@ publish-release:
     - export BUILD_DATE=$(cat cachedir/build_date)
     - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
     - export GENEWEB_COMMIT_DATE=$(cat cachedir/geneweb_commit_date)
-    - docker push "$CI_REGISTRY_IMAGE:arm32"
+#    - docker push "$CI_REGISTRY_IMAGE:arm32"
     - docker push "$CI_REGISTRY_IMAGE:arm64"
-    - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm32"
+#    - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm32"
     - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm64"
-    - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
+#    - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
     - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm64"
     - docker manifest push -p "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
     - docker manifest push -p "$CI_REGISTRY_IMAGE:latest"

@@ -39,7 +39,7 @@ docker run -d -t \
 -v $CONFDIR:/usr/local/share/geneweb/etc \
 -v $DATADIR:/usr/local/share/geneweb/share/data \
 -v $LOGDIR:/usr/local/share/geneweb/log \
--l raver/geneweb \
+--restart always \
 --name geneweb \
 ravermeister/geneweb
 ```

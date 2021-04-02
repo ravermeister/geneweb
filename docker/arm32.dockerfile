@@ -3,12 +3,12 @@ LABEL maintainer="Jonny Rimkus <jonny@rimkus.it>"
 
 ENV OPAM_VERSION="4.11.1"
 
-RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+RUN echo "@testing-community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
  apk update && apk add --no-cache --update bash ncurses \
  build-base linux-headers coreutils curl make m4 unzip gcc \
  pkgconfig gmp-dev perl-dev perl-ipc-system-simple util-linux \
  perl-string-shellquote git subversion mercurial rsync \
- curl-dev musl-dev redis protoc opam@testing
+ curl-dev musl-dev redis protoc opam@testing-community
 
 RUN rm -rf /usr/local/share/geneweb &&\
  mkdir -p /usr/local/share/geneweb &&\

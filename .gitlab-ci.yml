@@ -43,7 +43,7 @@ arm64:
     - arm64
     - docker
   script:
-    - docker buildx build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:arm64" -f arm64/dockerfile .
+    - docker buildx build --no-cache --force-rm --compress --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f arm64/dockerfile .
     - docker tag "$CI_IMAGE:arm64" "$CI_REGISTRY_IMAGE:arm64"
   only:
     - /^release\/.*$/
@@ -55,7 +55,7 @@ arm32:
     - arm32
     - docker
   script:
-    - docker buildx build --pull --no-cache --force-rm --compress --platform linux/arm/v7 -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
+    - docker buildx build --no-cache --force-rm --compress --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
     - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
   only:
     - /^release\/.*$/

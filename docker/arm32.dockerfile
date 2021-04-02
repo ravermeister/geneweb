@@ -23,7 +23,7 @@ RUN mkdir etc &&\
  mkdir log &&\
  mkdir tmp
 
-RUN setarch armv7l && opam init -y --disable-sandboxing &&\
+RUN opam init -y --disable-sandboxing &&\
  eval $(opam env) && opam update -a -y &&\
  eval $(opam env) && opam upgrade -a -y &&\
  eval $(opam env) && opam switch create "$OPAM_VERSION" &&\

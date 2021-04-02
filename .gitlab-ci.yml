@@ -30,6 +30,7 @@ variables:
     - docker logout "${CI_REGISTRY}"
 
 prepare:
+  stage: prepare
   script:
     - mkdir -p cachedir
     - export GENEWEB_COMMIT_URL="https://api.github.com/repos/geneweb/geneweb/commits?sha=master&per_page=1"

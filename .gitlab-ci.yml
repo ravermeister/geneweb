@@ -5,44 +5,66 @@ before_script:
   - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
   - export BUILD_DATE=$(date '+%Y-%m-%d.%H%M')
   - export CI_IMAGE="ravermeister/geneweb"
+  - mkdir utils
+  - apk add --no-cache make bash curl
+  - mkdir -p ~/.docker/cli-plugins
+  - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-arm64
+  - chmod +x ~/.docker/cli-plugins/docker-buildx
+
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - cachedir/
 
-build-release:
+build-arm64:
   stage: build
   tags:
     - arm64
-    - shell
+    - docker
   script:
     - rm -rf cachedir
     - mkdir -p cachedir
     - echo -n $BUILD_DATE >cachedir/build_date
     - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
     - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
-#    - docker build --pull --no-cache --force-rm --compress --platform linux/arm/v7 -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
+#    - docker buildx --pull --no-cache --force-rm --compress --platform linux/arm/v7 -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
 #    - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
-    - docker build --pull --no-cache --force-rm --compress -t "$CI_IMAGE:arm64" -f arm64/dockerfile .
+    - docker buildx --pull --no-cache --force-rm --compress -t "$CI_IMAGE:arm64" -f arm64/dockerfile .
     - docker tag "$CI_IMAGE:arm64" "$CI_REGISTRY_IMAGE:arm64"
   only:
     - /^release\/.*$/
 
-publish-release:
+build-arm32:
+  stage: build
+  tags:
+    - arm32
+    - docker
+  script:
+    - rm -rf cachedir
+    - mkdir -p cachedir
+    - echo -n $BUILD_DATE >cachedir/build_date
+    - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
+    - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
+    - docker buildx --pull --no-cache --force-rm --compress --platform linux/arm/v7 -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
+    - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
+  only:
+    - /^release\/.*$/
+  
+publish:
   stage: deploy
   tags:
     - arm64
-    - shell
+    - docker
   script:
     - export BUILD_DATE=$(cat cachedir/build_date)
     - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
     - export GENEWEB_COMMIT_DATE=$(cat cachedir/geneweb_commit_date)
-#    - docker push "$CI_REGISTRY_IMAGE:arm32"
+    - docker push "$CI_REGISTRY_IMAGE:arm32"
     - docker push "$CI_REGISTRY_IMAGE:arm64"
-#    - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm32"
+    - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm32"
     - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm64"
-#    - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
+    - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
     - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm64"
     - docker manifest push -p "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
     - docker manifest push -p "$CI_REGISTRY_IMAGE:latest"

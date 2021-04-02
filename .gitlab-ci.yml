@@ -26,6 +26,14 @@ variables:
     - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-arm64
     - chmod +x ~/.docker/cli-plugins/docker-buildx
     - echo -n "${CI_REGISTRY_TOKEN}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+    - mkdir -p cachedir
+    - export GENEWEB_COMMIT_URL="https://api.github.com/repos/geneweb/geneweb/commits?sha=master&per_page=1"
+    - export GENEWEB_COMMIT_DATE="$(date '+%Y-%m-%d.%H%M' -d "$(curl -s $GENEWEB_COMMIT_URL | jq --raw-output '.[0].commit.committer.date')")"
+    - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
+    - export BUILD_DATE=$(date '+%Y-%m-%d.%H%M')    
+    - echo -n $BUILD_DATE >cachedir/build_date
+    - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
+    - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
   after_script:
     - docker logout "${CI_REGISTRY}"
 

@@ -1,5 +1,4 @@
 stages:
-  - prepare
   - build
   - deploy
 
@@ -36,18 +35,6 @@ variables:
     - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
   after_script:
     - docker logout "${CI_REGISTRY}"
-
-prepare:
-  stage: prepare
-  script:
-    - mkdir -p cachedir
-    - export GENEWEB_COMMIT_URL="https://api.github.com/repos/geneweb/geneweb/commits?sha=master&per_page=1"
-    - export GENEWEB_COMMIT_DATE="$(date '+%Y-%m-%d.%H%M' -d "$(curl -s $GENEWEB_COMMIT_URL | jq --raw-output '.[0].commit.committer.date')")"
-    - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
-    - export BUILD_DATE=$(date '+%Y-%m-%d.%H%M')    
-    - echo -n $BUILD_DATE >cachedir/build_date
-    - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
-    - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
 
 arm64:
   stage: build

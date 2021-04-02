@@ -22,7 +22,7 @@ cache:
     - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
     - export BUILD_DATE=$(date '+%Y-%m-%d.%H%M')
     - export CI_IMAGE="ravermeister/geneweb"
-    - echo "${CI_REGISTRY_TOKEN}" | awk '{print $0}' | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+    - echo -n "${CI_REGISTRY_TOKEN}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
   after_script:
     - docker logout "${CI_REGISTRY}"
 

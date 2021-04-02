@@ -45,7 +45,7 @@ arm64:
   variables:
     BUILDX_PLATFORM: linux-arm64
   script:
-    - docker buildx build --no-cache --force-rm --compress --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f arm64/dockerfile .
+    - docker buildx build --no-cache --force-rm --compress --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f "docker/arm64.dockerfile" "assets/"
     - docker tag "$CI_IMAGE:arm64" "$CI_REGISTRY_IMAGE:arm64"
   only:
     - /^release\/.*$/
@@ -59,7 +59,7 @@ arm32:
   variables:
     BUILDX_PLATFORM: linux-arm-v7
   script:
-    - docker buildx build --no-cache --force-rm --compress --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f arm32/dockerfile .
+    - docker buildx build --no-cache --force-rm --compress --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f "docker/arm32.dockerfile" "assets/"
     - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
   only:
     - /^release\/.*$/

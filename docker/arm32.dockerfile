@@ -41,9 +41,9 @@ RUN rm -rf /usr/local/share/geneweb/share/dist && mv distribution /usr/local/sha
 
 WORKDIR /usr/local/share/geneweb
 RUN mv share/dist/bases share/data
-ADD assets/gwsetup_only etc/gwsetup_only
-ADD assets/geneweb-launch.sh bin/geneweb-launch.sh
-ADD assets/redis.conf /etc/redis.conf
+ADD gwsetup_only etc/gwsetup_only
+ADD geneweb-launch.sh bin/geneweb-launch.sh
+ADD redis.conf /etc/redis.conf
 
 USER root
 ENTRYPOINT bin/geneweb-launch.sh >/dev/null 2>&1

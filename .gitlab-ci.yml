@@ -55,7 +55,7 @@ arm32:
   extends: .imgjob
   tags:
     - arm32
-    - docker
+    - shell
   variables:
     BUILDX_PLATFORM: linux-arm-v7
   script:

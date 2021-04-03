@@ -43,7 +43,7 @@ arm32:
     - arm32
     - shell
   script:
-    - docker buildx build --no-cache --force-rm --compress --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f "docker/arm32.dockerfile" "assets/"
+    - docker build --no-cache --force-rm --compress --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f "docker/arm32.dockerfile" "assets/"
     - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
   only:
     - /^release\/.*$/

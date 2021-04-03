@@ -11,19 +11,7 @@ variables:
   CI_IMAGE: "ravermeister/geneweb"
 
 .imgjob:
-#  image: docker
-#  services:
-#    - name: docker:dind
-#      command: ["--experimental"]
-  variables:
-    DOCKER_DRIVER: overlay2
-    BUILDX_VERSION: v0.5.1
   before_script:
-#    - mkdir utils
-#    - apk add --no-cache make bash curl jq git
-#    - mkdir -p ~/.docker/cli-plugins
-#    - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.$BUILDX_PLATFORM
-#    - chmod +x ~/.docker/cli-plugins/docker-buildx
     - echo -n "${CI_REGISTRY_TOKEN}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - mkdir -p cachedir
     - export GENEWEB_COMMIT_URL="https://api.github.com/repos/geneweb/geneweb/commits?sha=master&per_page=1"
@@ -42,8 +30,6 @@ arm64:
   tags:
     - arm64
     - shell
-  variables:
-    BUILDX_PLATFORM: linux-arm64
   script:
     - docker buildx build --no-cache --force-rm --compress --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f "docker/arm64.dockerfile" "assets/"
     - docker tag "$CI_IMAGE:arm64" "$CI_REGISTRY_IMAGE:arm64"
@@ -56,8 +42,6 @@ arm32:
   tags:
     - arm32
     - shell
-  variables:
-    BUILDX_PLATFORM: linux-arm-v7
   script:
     - docker buildx build --no-cache --force-rm --compress --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f "docker/arm32.dockerfile" "assets/"
     - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"

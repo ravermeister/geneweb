@@ -69,7 +69,7 @@ publish:
   extends: .imgjob
   tags:
     - arm64
-    - shell
+    - docker
   script:
     - export BUILD_DATE=$(cat cachedir/build_date)
     - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)

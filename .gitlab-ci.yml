@@ -53,6 +53,7 @@ arm64:
 arm32:
   stage: build
   extends: .imgjob
+  allow_failure: true
   tags:
     - arm32
     - docker

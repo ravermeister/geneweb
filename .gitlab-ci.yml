@@ -26,7 +26,7 @@ variables:
     BUILDX_VERSION: v0.5.1
   before_script:
     - mkdir utils
-    - apk add --no-cache make bash curl jq
+    - apk add --no-cache make bash curl jq git
     - mkdir -p ~/.docker/cli-plugins
     - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.$BUILDX_PLATFORM
     - chmod +x ~/.docker/cli-plugins/docker-buildx

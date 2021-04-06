@@ -10,17 +10,23 @@ cache:
 variables:
   CI_IMAGE: "ravermeister/geneweb"
 
-.imgjob:
+### Begin basic Job definition
+
+.dockerjob:
   image: docker
   services:
     - name: docker:dind
       command: ["--experimental"]
   variables:
     DOCKER_DRIVER: overlay2
+  
+.imgjob:
+  extends: .dockerjob
+  variables:
     BUILDX_VERSION: v0.5.1
   before_script:
     - mkdir utils
-    - apk add --no-cache make bash curl
+    - apk add --no-cache make bash curl jq
     - mkdir -p ~/.docker/cli-plugins
     - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.$BUILDX_PLATFORM
     - chmod +x ~/.docker/cli-plugins/docker-buildx
@@ -35,6 +41,8 @@ variables:
     - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
   after_script:
     - docker logout "${CI_REGISTRY}"
+
+### End of Basic Job definition
 
 arm64:
   stage: build
@@ -67,7 +75,7 @@ arm32:
   
 publish:
   stage: deploy
-  extends: .imgjob
+  extends: .dockerjob
   tags:
     - arm64
     - docker

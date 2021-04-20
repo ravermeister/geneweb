@@ -13,7 +13,6 @@ variables:
 ### Begin basic Job definition
   
 .imgjob:
-  extends: .dockerjob
   image: docker
   services:
     - name: docker:dind

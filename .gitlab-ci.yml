@@ -58,6 +58,7 @@ arm32:
     BUILDX_PLATFORM: "linux-arm64"
   dependencies:
     - initvars
+  allow_failure: true
   script:    
     - docker buildx build --no-cache --force-rm --compress --load --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f "docker/arm32.dockerfile" "assets/"
     - echo "BUILD_ARM32=true" >>versions.env
@@ -77,6 +78,7 @@ arm64:
     BUILDX_PLATFORM: "linux-arm64"
   dependencies:
     - initvars
+  allow_failure: true
   script:    
     - docker buildx build --no-cache --force-rm --compress --load --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f "docker/arm64.dockerfile" "assets/"
     - echo "BUILD_ARM64=true" >>versions.env
@@ -104,6 +106,7 @@ publish:
         docker push "$CI_REGISTRY_IMAGE:arm32"
         docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm32"
         docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
+        PUSH_MANIFEST=true
       fi
     - >
       if [ "$BUILD_ARM64" = "true" ]; then
@@ -111,9 +114,16 @@ publish:
         docker push "$CI_REGISTRY_IMAGE:arm64"
         docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm64"
         docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm64"
+        PUSH_MANIFEST=true
       fi
-    - docker manifest push -p "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
-    - docker manifest push -p "$CI_REGISTRY_IMAGE:latest"
+    - >
+      if [ "$PUSH_MANIFEST" = "true" ]; then 
+        docker manifest push -p "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
+        docker manifest push -p "$CI_REGISTRY_IMAGE:latest"
+      else
+        echo "nothing was build, so there is nothing to push to dockerhub!"
+        exit 1
+      fi
   only:
     - /^release\/.*$/
 

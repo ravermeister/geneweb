@@ -9,11 +9,12 @@ RUN set -eux; \
     apt-get update -q && \
     apt-get install -yq --no-install-recommends \
       apt-transport-https ca-certificates less nano \
-      tzdata libatomic1 vim wget ncurses \
-      build-base linux-headers coreutils curl make m4 unzip gcc \
-      pkgconfig gmp-dev perl-dev perl-ipc-system-simple \
-      perl-string-shellquote git subversion mercurial rsync \
-      curl-dev musl-dev redis protoc opam rsyslog \
+      tzdata libatomic1 vim wget libncurses5-dev \
+      build-essential linux-headers-arm64 coreutils curl make m4 unzip gcc \
+      pkg-config libgmp-dev libperl-dev libipc-system-simple-perl \
+      libstring-shellquote-perl git subversion mercurial rsync \
+      libcurl-dev musl-dev redis protobuf-compiler opam rsyslog \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && sed 's/session\s*required\s*pam_loginuid.so/session optional pam_loginuid.so/g' -i /etc/pam.d/sshd \
     # Remove MOTD

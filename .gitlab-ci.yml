@@ -1,4 +1,5 @@
 stages:
+  - prepare
   - build
   - deploy
 
@@ -26,21 +27,28 @@ variables:
     - mkdir -p ~/.docker/cli-plugins
     - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-arm64
     - chmod +x ~/.docker/cli-plugins/docker-buildx
-    - echo -n "${CI_REGISTRY_TOKEN}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
-    - mkdir -p cachedir
-    - export GENEWEB_COMMIT_URL="https://api.github.com/repos/geneweb/geneweb/commits?sha=master&per_page=1"
-    - export GENEWEB_COMMIT_DATE="$(date '+%Y-%m-%d.%H%M' -d "$(curl -s $GENEWEB_COMMIT_URL | jq --raw-output '.[0].commit.committer.date' | tr -s "T" " " | tr -d "Z")")"
-    - export GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
-    - export BUILD_DATE=$(date '+%Y-%m-%d.%H%M')    
-    - echo -n $BUILD_DATE >cachedir/build_date
-    - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
-    - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
+    - echo -n "${CI_REGISTRY_TOKEN}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"    
+    - docker buildx create --use >/dev/null
   after_script:
+    - docker buildx stop
+    - docker buildx rm
     - docker logout "${CI_REGISTRY}"
 
 ### End of Basic Job definition
 
-build_image:
+initvars:
+  stage: prepare
+  script:
+    - GENEWEB_COMMIT_URL="https://api.github.com/repos/geneweb/geneweb/commits?sha=master&per_page=1"
+    - GENEWEB_COMMIT_DATE="$(date '+%Y-%m-%d.%H%M' -d "$(curl -s $GENEWEB_COMMIT_URL | jq --raw-output '.[0].commit.committer.date' | tr -s "T" " " | tr -d "Z")")"
+    - GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)
+    - BUILD_DATE=$(date '+%Y-%m-%d.%H%M')    
+    - mkdir -p cachedir
+    - echo -n $BUILD_DATE >cachedir/build_date
+    - echo -n $GIT_COMMIT_DATE >cachedir/git_commit_date
+    - echo -n $GENEWEB_COMMIT_DATE >cachedir/geneweb_commit_date
+
+arm32:
   stage: build
   extends: .imgjob
   tags:
@@ -48,30 +56,62 @@ build_image:
     - docker
   variables:
     BUILDX_PLATFORM: "linux-arm64"
-  script:
-    - docker buildx build --no-cache --force-rm --compress --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f "docker/arm64.dockerfile" "assets/"
-    - docker tag "$CI_IMAGE:arm64" "$CI_REGISTRY_IMAGE:arm64"
-#    - docker buildx build --no-cache --force-rm --compress --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f "docker/arm32.dockerfile" "assets/"
-#    - docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
+  dependencies:
+    - initvars
+  script:    
+    - docker buildx build --no-cache --force-rm --compress --load --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f "docker/arm32.dockerfile" "assets/"
+    - echo "BUILD_ARM32=true" >>versions.env
   only:
     - /^release\/.*$/
-  
+  artifacts:
+    reports:
+      dotenv: versions.env
+
+arm64:
+  stage: build
+  extends: .imgjob
+  tags:
+    - arm64
+    - docker
+  variables:
+    BUILDX_PLATFORM: "linux-arm64"
+  dependencies:
+    - initvars
+  script:    
+    - docker buildx build --no-cache --force-rm --compress --load --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f "docker/arm64.dockerfile" "assets/"
+    - echo "BUILD_ARM64=true" >>versions.env
+  only:
+    - /^release\/.*$/
+  artifacts:
+    reports:
+      dotenv: versions.env
+
 publish:
   stage: deploy
   extends: .imgjob
   tags:
     - arm64
     - docker
+  dependencies:
+    - initvars
+    - arm32
+    - arm64
   script:
-    - export BUILD_DATE=$(cat cachedir/build_date)
-    - export GIT_COMMIT_DATE=$(cat cachedir/git_commit_date)
-    - export GENEWEB_COMMIT_DATE=$(cat cachedir/geneweb_commit_date)
-#    - docker push "$CI_REGISTRY_IMAGE:arm32"
-    - docker push "$CI_REGISTRY_IMAGE:arm64"
-#    - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm32"
-    - docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm64"
-#    - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
-    - docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm64"
+    - GENEWEB_COMMIT_DATE=$(cat cachedir/geneweb_commit_date)
+    - >
+      if [ "$BUILD_ARM32" = "true" ]; then
+        docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
+        docker push "$CI_REGISTRY_IMAGE:arm32"
+        docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm32"
+        docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
+      fi
+    - >
+      if [ "$BUILD_ARM64" = "true" ]; then
+        docker tag "$CI_IMAGE:arm64" "$CI_REGISTRY_IMAGE:arm64"
+        docker push "$CI_REGISTRY_IMAGE:arm64"
+        docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm64"
+        docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm64"
+      fi
     - docker manifest push -p "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE"
     - docker manifest push -p "$CI_REGISTRY_IMAGE:latest"
   only:

@@ -1,14 +1,24 @@
-FROM arm32v7/alpine:3.12
+FROM arm32v7/debian:stable-slim
 LABEL maintainer="Jonny Rimkus <jonny@rimkus.it>"
 
 ENV OPAM_VERSION="4.11.1"
 
-RUN echo "@testing-community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
- apk update && apk add --no-cache --update bash ncurses \
- build-base linux-headers coreutils curl make m4 unzip gcc \
- pkgconfig gmp-dev perl-dev perl-ipc-system-simple util-linux \
- perl-string-shellquote git subversion mercurial rsync \
- curl-dev musl-dev redis protoc opam@testing-community
+# Install required packages
+RUN set -eux; \
+    export DEBIAN_FRONTEND=noninteractive &&\
+    apt-get update -q &&\
+    apt-get install -yq --no-install-recommends \
+      apt-transport-https ca-certificates less nano \
+      tzdata libatomic1 vim wget ncurses \
+      build-base linux-headers coreutils curl make m4 unzip gcc \
+      pkgconfig gmp-dev perl-dev perl-ipc-system-simple \
+      perl-string-shellquote git subversion mercurial rsync \
+      curl-dev musl-dev redis protoc opam rsyslog
+    && rm -rf /var/lib/apt/lists/* \
+    && sed 's/session\s*required\s*pam_loginuid.so/session optional pam_loginuid.so/g' -i /etc/pam.d/sshd \
+    # Remove MOTD
+    && rm -rf /etc/update-motd.d /etc/motd /etc/motd.dynamic \
+    && ln -fs /dev/null /run/motd.dynamic
 
 RUN rm -rf /usr/local/share/geneweb &&\
  mkdir -p /usr/local/share/geneweb &&\

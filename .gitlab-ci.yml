@@ -25,7 +25,7 @@ variables:
     - mkdir utils
     - apk add --no-cache make bash curl jq git
     - mkdir -p ~/.docker/cli-plugins
-    - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-arm64
+    - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.$BUILDX_PLATFORM
     - chmod +x ~/.docker/cli-plugins/docker-buildx
     - echo -n "${CI_REGISTRY_TOKEN}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"    
     - docker buildx create --use >/dev/null

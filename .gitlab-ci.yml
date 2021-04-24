@@ -12,27 +12,29 @@ variables:
   CI_IMAGE: "ravermeister/geneweb"
 
 ### Begin basic Job definition
-  
-.imgjob:
+
+.dockerjob:
   image: docker
   services:
     - name: docker:dind
       command: ["--experimental"]
   variables:
     DOCKER_DRIVER: overlay2
+
+.imgjob:
+  extends: .dockerjob
+  variables:
     BUILDX_VERSION: v0.5.1
   before_script:
     - mkdir utils
     - apk add --no-cache make bash curl jq git
     - mkdir -p ~/.docker/cli-plugins
     - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.$BUILDX_PLATFORM
-    - chmod +x ~/.docker/cli-plugins/docker-buildx
-    - echo -n "${CI_REGISTRY_TOKEN}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"    
+    - chmod +x ~/.docker/cli-plugins/docker-buildx       
     - docker buildx create --use >/dev/null
   after_script:
     - docker buildx stop
-    - docker buildx rm
-    - docker logout "${CI_REGISTRY}"
+    - docker buildx rm    
 
 ### End of Basic Job definition
 
@@ -90,7 +92,7 @@ arm64:
 
 publish:
   stage: deploy
-  extends: .imgjob
+  extends: .dockerjob
   tags:
     - arm64
     - docker
@@ -98,6 +100,8 @@ publish:
     - initvars
     - arm32
     - arm64
+  before_script:
+    - echo -n "${CI_REGISTRY_TOKEN}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}" 
   script:
     - GENEWEB_COMMIT_DATE=$(cat cachedir/geneweb_commit_date)
     - >
@@ -124,6 +128,8 @@ publish:
         echo "nothing was build, so there is nothing to push to dockerhub!"
         exit 1
       fi
+  after_script:
+    - docker logout "${CI_REGISTRY}"
   only:
     - /^release\/.*$/
 

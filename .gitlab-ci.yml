@@ -52,10 +52,10 @@ arm32:
   stage: build
   extends: .imgjob
   tags:
-    - arm64
+    - arm32
     - docker
   variables:
-    BUILDX_PLATFORM: "linux-arm64"
+    BUILDX_PLATFORM: "linux-arm-v7"
   dependencies:
     - initvars
   allow_failure: true

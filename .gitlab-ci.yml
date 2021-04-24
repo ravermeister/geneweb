@@ -40,7 +40,9 @@ variables:
 
 initvars:
   stage: prepare
+  extends: .dockerjob
   script:
+    - apk add --no-cache make bash curl jq git
     - GENEWEB_COMMIT_URL="https://api.github.com/repos/geneweb/geneweb/commits?sha=master&per_page=1"
     - GENEWEB_COMMIT_DATE="$(date '+%Y-%m-%d.%H%M' -d "$(curl -s $GENEWEB_COMMIT_URL | jq --raw-output '.[0].commit.committer.date' | tr -s "T" " " | tr -d "Z")")"
     - GIT_COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%d.%H%M)

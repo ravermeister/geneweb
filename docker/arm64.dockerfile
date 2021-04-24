@@ -13,7 +13,7 @@ RUN set -eux; \
       build-essential linux-headers-arm64 coreutils curl make m4 unzip gcc \
       pkg-config libgmp-dev libperl-dev libipc-system-simple-perl \
       libstring-shellquote-perl git subversion mercurial rsync \
-      libcurl-dev musl-dev redis protobuf-compiler opam rsyslog \
+      libcurl4-openssl-dev musl-dev redis protobuf-compiler opam rsyslog \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && sed 's/session\s*required\s*pam_loginuid.so/session optional pam_loginuid.so/g' -i /etc/pam.d/sshd \

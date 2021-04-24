@@ -16,7 +16,6 @@ RUN set -eux; \
       libcurl4-openssl-dev musl-dev redis protobuf-compiler opam rsyslog \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && sed 's/session\s*required\s*pam_loginuid.so/session optional pam_loginuid.so/g' -i /etc/pam.d/sshd \
     # Remove MOTD
     && rm -rf /etc/update-motd.d /etc/motd /etc/motd.dynamic \
     && ln -fs /dev/null /run/motd.dynamic

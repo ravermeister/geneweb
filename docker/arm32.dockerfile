@@ -22,7 +22,7 @@ RUN set -eux; \
 
 RUN rm -rf /usr/local/share/geneweb && \
  mkdir -p /usr/local/share/geneweb && \
- adduser -D -h /usr/local/share/geneweb -s /bin/bash geneweb geneweb && \
+ adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb geneweb && \
  chown -R geneweb:geneweb /usr/local/share/geneweb
 
 USER geneweb:geneweb

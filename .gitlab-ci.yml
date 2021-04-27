@@ -105,6 +105,8 @@ publish:
   before_script:
     - echo -n "${CI_REGISTRY_TOKEN}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}" 
   script:
+    - ls -l .
+    - ls -l cachedir/
     - GENEWEB_COMMIT_DATE=$(cat cachedir/geneweb_commit_date)
     - >
       if [ "$BUILD_ARM32" = "true" ]; then

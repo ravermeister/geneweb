@@ -41,6 +41,7 @@ variables:
 initvars:
   stage: prepare
   extends: .dockerjob
+  tags:
     - arm64
     - docker
   script:

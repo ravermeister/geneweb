@@ -33,7 +33,8 @@ RUN mkdir etc && \
  mkdir log && \
  mkdir tmp
 
-RUN opam init -y --disable-sandboxing && \
+RUN ulimit -s unlimited && \
+ opam init -y --disable-sandboxing && \
  eval $(opam env) && opam update -a -y && \
  eval $(opam env) && opam upgrade -a -y && \
  eval $(opam env) && opam switch create "$OPAM_VERSION" && \

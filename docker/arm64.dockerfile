@@ -41,7 +41,7 @@ RUN ulimit -s unlimited && \
  eval $(opam env) && opam install -y --unlock-base \
  camlp5.7.13 cppo dune jingoo markup ounit uucp uunf \
  unidecode ocurl piqi piqilib redis redis-sync yojson \
- calendars syslog ppx_import
+ calendars syslog ppx_import ppx_blob
 
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build"
 RUN git clone https://github.com/geneweb/geneweb geneweb

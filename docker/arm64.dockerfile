@@ -1,7 +1,7 @@
 FROM arm64v8/debian:stable-slim
 LABEL maintainer="Jonny Rimkus <jonny@rimkus.it>"
 
-ENV OPAM_VERSION="4.11.1"
+ENV OPAM_VERSION="4.13.1"
 
 # Install required packages
 RUN set -eux; \

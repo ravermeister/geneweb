@@ -86,7 +86,6 @@ arm64:
     BUILDX_PLATFORM: "linux-arm64"
   dependencies:
     - initvars
-  allow_failure: true
   script:    
     - docker buildx build --no-cache --force-rm --compress --load --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f "docker/arm64.dockerfile" "assets/"
     - echo "BUILD_ARM64=true" >>versions.env

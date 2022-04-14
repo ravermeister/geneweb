@@ -24,7 +24,7 @@ variables:
 .imgjob:
   extends: .dockerjob
   variables:
-    BUILDX_VERSION: v0.5.1
+    BUILDX_VERSION: v0.8.2
   before_script:
     - mkdir utils
     - apk add --no-cache make bash curl jq git

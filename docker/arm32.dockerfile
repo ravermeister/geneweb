@@ -14,6 +14,7 @@ RUN set -eux; \
       pkg-config libgmp-dev libperl-dev libipc-system-simple-perl \
       libstring-shellquote-perl git subversion mercurial rsync \
       libcurl4-openssl-dev musl-dev redis protobuf-compiler opam rsyslog \
+      bubblewrap darcs g++-multilib gcc-multilib musl-tools \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     # Remove MOTD
@@ -49,7 +50,7 @@ RUN git clone https://github.com/geneweb/geneweb geneweb
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build/geneweb"
 # --api switch doesn't exist anymore
 # RUN eval $(opam env) && ocaml ./configure.ml --api && make clean distrib
-RUN eval $(opam env) && ocaml ./configure.ml  && make clean distrib
+RUN eval $(opam env) && ocaml ./configure.ml --release && make clean distrib
 RUN rm -rf /usr/local/share/geneweb/share/dist && mv distribution /usr/local/share/geneweb/share/dist
 
 WORKDIR /usr/local/share/geneweb

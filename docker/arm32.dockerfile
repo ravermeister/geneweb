@@ -21,10 +21,13 @@ RUN set -eux; \
     && rm -rf /etc/update-motd.d /etc/motd /etc/motd.dynamic \
     && ln -fs /dev/null /run/motd.dynamic
 
-RUN rm -rf /usr/local/share/geneweb && \
- mkdir -p /usr/local/share/geneweb && \
+RUN rm -rf /usr/local/share/geneweb && \ 
  adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb && \
- chown -R geneweb:geneweb /usr/local/share/geneweb
+ 
+#RUN rm -rf /usr/local/share/geneweb && \
+# mkdir -p /usr/local/share/geneweb && \
+# adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb && \
+# chown -R geneweb:geneweb /usr/local/share/geneweb
 
 USER geneweb:geneweb
 WORKDIR /usr/local/share/geneweb

@@ -22,7 +22,7 @@ RUN set -eux; \
     && ln -fs /dev/null /run/motd.dynamic
 
 RUN rm -rf /usr/local/share/geneweb && \ 
- adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb && \
+ adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb
  
 #RUN rm -rf /usr/local/share/geneweb && \
 # mkdir -p /usr/local/share/geneweb && \

@@ -23,11 +23,7 @@ RUN set -eux; \
 
 RUN rm -rf /usr/local/share/geneweb && \ 
  adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb
- 
-#RUN rm -rf /usr/local/share/geneweb && \
-# mkdir -p /usr/local/share/geneweb && \
-# adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb && \
-# chown -R geneweb:geneweb /usr/local/share/geneweb
+
 
 USER geneweb:geneweb
 WORKDIR /usr/local/share/geneweb
@@ -48,13 +44,18 @@ RUN ulimit -s unlimited && \
  calendars syslog ppx_import ppx_blob
 
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build"
-RUN git clone https://github.com/geneweb/geneweb geneweb
-
+########### OLD #################
+#RUN git clone https://github.com/geneweb/geneweb geneweb
+#WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build/geneweb"
+#RUN eval $(opam env) && ocaml ./configure.ml --release && make clean distrib
+#RUN rm -rf /usr/local/share/geneweb/share/dist && mv distribution /usr/local/share/geneweb/share/dist
+############ NEW #################
+RUN opam pin add git+https://github.com/geneweb/geneweb.git genweb --no-action
 WORKDIR "/usr/local/share/geneweb/.opam/$OPAM_VERSION/.opam-switch/build/geneweb"
-# --api switch doesn't exist anymore
-# RUN eval $(opam env) && ocaml ./configure.ml --api && make clean distrib
-RUN eval $(opam env) && ocaml ./configure.ml --release && make clean distrib
-RUN rm -rf /usr/local/share/geneweb/share/dist && mv distribution /usr/local/share/geneweb/share/dist
+RUN eval $(opam env) && opam depext geneweb --yes && \
+  opam install geneweb --deps-only && \
+  opam exec -- make ci
+RUN rm -rf /usr/local/share/geneweb/share/dist && ls -la . && mv distribution /usr/local/share/geneweb/share/dist
 
 WORKDIR /usr/local/share/geneweb
 RUN mv share/dist/bases share/data

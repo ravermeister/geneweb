@@ -14,7 +14,7 @@ RUN set -eux; \
       pkg-config libgmp-dev libperl-dev libipc-system-simple-perl \
       libstring-shellquote-perl git subversion mercurial rsync \
       libcurl4-openssl-dev musl-dev redis protobuf-compiler opam rsyslog \
-      bubblewrap darcs g++-multilib gcc-multilib musl-tools \
+      bubblewrap darcs musl-tools \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     # Remove MOTD

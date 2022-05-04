@@ -40,7 +40,7 @@ RUN ulimit -s unlimited && \
   eval $(opam env) && opam install geneweb --deps-only && \
   ./configure.ml --release && make clean distrib && \
   rm -rf ~/share/dist && mv distribution ~/share/dist && \
-  rm -rf .opam/$OPAM_VERSION/.opam-switch/build/geneweb
+  rm -rf .opam/$OPAM_VERSION/.opam-switch/build/geneweb && \
   cd ~ && mv share/dist/bases share/data
 
 ADD gwsetup_only etc/gwsetup_only

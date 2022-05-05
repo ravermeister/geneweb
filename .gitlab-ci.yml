@@ -58,6 +58,7 @@ initvars:
 arm32:
   stage: build
   extends: .imgjob
+  when: manual
   tags:
     - arm64
     - docker

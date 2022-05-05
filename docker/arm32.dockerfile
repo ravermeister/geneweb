@@ -15,7 +15,7 @@ RUN set -eux; \
     pkg-config libgmp-dev libperl-dev libipc-system-simple-perl \
     libstring-shellquote-perl git subversion mercurial rsync \
     libcurl4-openssl-dev musl-dev protobuf-compiler opam rsyslog \
-    bubblewrap darcs musl-tools && \
+    bubblewrap darcs musl-tools procps && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   rm -rf /etc/update-motd.d /etc/motd /etc/motd.dynamic && \
@@ -46,6 +46,8 @@ RUN ulimit -s unlimited && \
 
 ADD gwsetup_only etc/gwsetup_only
 ADD geneweb-launch.sh bin/geneweb-launch.sh
+
+USER root:root
 
 ENTRYPOINT bin/geneweb-launch.sh >/dev/null 2>&1
 

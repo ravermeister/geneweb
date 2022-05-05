@@ -8,27 +8,29 @@ GWD_STATUS=
 GWSETUP_PID=
 GWSETUP_STATUS=
 
-REDIS_PID=
-REDIS_STATUS=
-
 GWSETUP_LANG=de
 GWD_LANG=de
 
 ## runs as geneweb
 isalive(){
-	if [ $GWD_STATUS -ne 0 -o $GWSETUP_STATUS -ne 0 -o $REDIS_STATUS -ne 0 ]; then
-		echo "either gwsetup, gwd or redis has died!" >&2
+	if [ $GWD_STATUS -ne 0 -o $GWSETUP_STATUS ]; then
+		echo "either gwsetup or gwd has died!" >&2
 		exit 1
 	fi
+}
+
+## runs as root
+init() {
+	chown -R geneweb:geneweb share/data
+	chown -R geneweb:geneweb etc
+	chown -R geneweb:geneweb log
+
+	/usr/sbin/rsyslogd >/dev/null 2>&1
 }
 
 ## runs as geneweb
 start() {
 	eval $(opam env)
-
-	/usr/bin/redis-server etc/redis.conf >>log/redis.log 2>&1 &
-	REDIS_PID=$!
-	REDIS_STATUS=$?
 
 	cd share/data
 
@@ -69,7 +71,7 @@ start() {
 	fi
 
 	isalive
-	echo "gwsetup, gwd and redis started!"
+	echo "gwsetup and gwd started!"
 	watch
 }
 
@@ -78,15 +80,21 @@ watch() {
 
 	while sleep 60; do
 		ps aux | grep gwsetup | grep -q -v grep GWSETUP_STATUS
-		ps aux | grep gwd | grep -q -v grep GWD_STATUS
-		ps aux | grep redis-server | grep -q -v grep REDIS_STATUS
+		ps aux | grep gwd | grep -q -v grep GWD_STATUS		
 		isalive
 	done
 }
 
 
 ## main routine
-start
+## run init things as root (set permissions etc.)
+## run the startup routine as correct geneweb user
+if [ $(id -u) -eq 0 ]; then
+	init
+	su -c "$0" -l geneweb
+else
+	start
+fi
 
 exit 0
 

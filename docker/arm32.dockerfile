@@ -14,7 +14,7 @@ RUN set -eux; \
     build-essential linux-headers-armmp coreutils curl make m4 unzip gcc \
     pkg-config libgmp-dev libperl-dev libipc-system-simple-perl \
     libstring-shellquote-perl git subversion mercurial rsync \
-    libcurl4-openssl-dev musl-dev redis protobuf-compiler opam rsyslog \
+    libcurl4-openssl-dev musl-dev protobuf-compiler opam rsyslog \
     bubblewrap darcs musl-tools && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
@@ -46,9 +46,7 @@ RUN ulimit -s unlimited && \
 
 ADD gwsetup_only etc/gwsetup_only
 ADD geneweb-launch.sh bin/geneweb-launch.sh
-ADD redis.conf /etc/redis.conf
 
-USER root
 ENTRYPOINT bin/geneweb-launch.sh >/dev/null 2>&1
 
 EXPOSE 2316-2317

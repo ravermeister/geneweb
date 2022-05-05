@@ -22,26 +22,11 @@ isalive(){
 	fi
 }
 
-## runs as root
-init() {
-	chown -R geneweb:geneweb share/data
-	chown -R geneweb:geneweb etc
-	chown -R geneweb:geneweb log
-
-	if [ -f "etc/redis.conf" ]; then
-		cp etc/redis.conf /etc
-		chown root:root /etc/redis.conf
-		chmod +r /etc/redis.conf
-	fi
-
-	/usr/sbin/rsyslogd >/dev/null 2>&1
-}
-
 ## runs as geneweb
 start() {
 	eval $(opam env)
 
-	/usr/bin/redis-server /etc/redis.conf >>log/redis.log 2>&1 &
+	/usr/bin/redis-server etc/redis.conf >>log/redis.log 2>&1 &
 	REDIS_PID=$!
 	REDIS_STATUS=$?
 
@@ -61,8 +46,6 @@ start() {
 	if [ -f $GWD_AUTH_FILE ]; then
 		../dist/gw/gwd \
 		-daemon \
-		-redis 127.0.0.1 \
-		-redis_p 6379 \
 		-trace_failed_passwd \
 		-auth $GWD_AUTH_FILE \
 		-hd ../dist/gw \
@@ -75,8 +58,6 @@ start() {
 	else
 		../dist/gw/gwd \
 		-daemon \
-		-redis 127.0.0.1 \
-		-redis_p 6379 \
 		-trace_failed_passwd \
 		-hd ../dist/gw \
 		-lang $GWD_LANG \
@@ -105,14 +86,7 @@ watch() {
 
 
 ## main routine
-## run init things as root (set permissions etc.)
-## run the startup routine as correct geneweb user
-if [ $(id -u) -eq 0 ]; then
-	init
-	su -c "$0" -l geneweb
-else
-	start
-fi
+start
 
 exit 0
 

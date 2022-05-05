@@ -13,7 +13,7 @@ GWD_LANG=de
 
 ## runs as geneweb
 isalive(){
-	if [ $GWD_STATUS -ne 0 -o $GWSETUP_STATUS ]; then
+	if [ $GWD_STATUS -ne 0 -o $GWSETUP_STATUS -ne 0 ]; then
 		echo "either gwsetup or gwd has died!" >&2
 		exit 1
 	fi

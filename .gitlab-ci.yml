@@ -59,7 +59,7 @@ arm32:
   stage: build
   extends: .imgjob
   tags:
-    - arm32
+    - arm64
     - docker
   variables:
     BUILDX_PLATFORM: "linux-arm-v7"

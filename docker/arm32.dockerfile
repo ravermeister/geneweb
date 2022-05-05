@@ -38,7 +38,8 @@ RUN ulimit -s unlimited && \
   eval $(opam env) && opam pin add geneweb.dev . --no-action && \
   eval $(opam env) && opam depext geneweb && \
   eval $(opam env) && opam install geneweb --deps-only && \
-  ./configure.ml --release && make clean distrib && \
+  eval $(opam env) && ./configure.ml --release && \
+  eval $(opam env) && opam exec -- make clean distrib && \
   rm -rf ~/share/dist && mv distribution ~/share/dist && \
   rm -rf .opam/$OPAM_VERSION/.opam-switch/build/geneweb && \
   cd ~ && mv share/dist/bases share/data

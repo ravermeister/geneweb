@@ -1,6 +1,6 @@
 FROM arm32v7/debian:stable-slim
-LABEL maintainer="Jonny Rimkus <jonny@rimkus.it>"
-
+LABEL org.opencontainers.image.authors="Jonny Rimkus <jonny@rimkus.it>" \
+description="Geneweb for arm32 on debian-slim"
 ENV OPAM_VERSION="4.13.1"
 ENV OPAMYES=yes
 

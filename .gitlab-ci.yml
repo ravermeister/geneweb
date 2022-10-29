@@ -30,11 +30,11 @@ variables:
     - apk add --no-cache make bash curl jq git
     - mkdir -p ~/.docker/cli-plugins
     - curl -sSLo ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.$BUILDX_PLATFORM
-    - chmod +x ~/.docker/cli-plugins/docker-buildx       
+    - chmod +x ~/.docker/cli-plugins/docker-buildx
     - docker buildx create --use >/dev/null
   after_script:
     - docker buildx stop
-    - docker buildx rm    
+    - docker buildx rm
 
 ### End of Basic Job definition
 
@@ -66,7 +66,7 @@ arm32:
     BUILDX_PLATFORM: "linux-arm-v7"
   dependencies:
     - initvars
-  script:    
+  script:
     - docker buildx build --no-cache --force-rm --compress --load --platform "linux/arm/v7" -t "$CI_IMAGE:arm32" -f "docker/arm32.dockerfile" "assets/"
     - echo "BUILD_ARM32=true" >>versions.env
   only:
@@ -85,8 +85,8 @@ arm64:
     BUILDX_PLATFORM: "linux-arm64"
   dependencies:
     - initvars
-  script:    
-    - docker buildx build --no-cache --force-rm --compress --load --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f "docker/arm64.dockerfile" "assets/"
+  script:
+    - docker buildx build --no-cache --force-rm --compress --load --platform "linux/arm64" -t "$CI_IMAGE:arm64" -f "docker/arm64.multistage.dockerfile" "assets/"
     - echo "BUILD_ARM64=true" >>versions.env
   only:
     - /^release\/.*$/

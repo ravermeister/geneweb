@@ -31,8 +31,6 @@ init() {
 
 ## runs as geneweb
 start() {
-	eval $(opam env)
-
 	cd share/data
 
 	../dist/gw/gwsetup \
@@ -78,13 +76,15 @@ start() {
 
 ## runs as geneweb
 watch() {
-
 	while sleep 60; do
-		ps aux | grep gwsetup | grep -q -v grep GWSETUP_STATUS
-		ps aux | grep gwd | grep -q -v grep GWD_STATUS		
+		ps -eo comm | grep -q gwsetup 
+		GWSETUP_STATUS=$?
+		ps -eo comm | grep -q gwd 
+		GWD_STATUS=$?
 		isalive
 	done
 }
+
 
 
 ## main routine

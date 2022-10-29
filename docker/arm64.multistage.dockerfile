@@ -68,8 +68,10 @@ ADD gwsetup_only etc/gwsetup_only
 ADD geneweb-launch.sh bin/geneweb-launch.sh
 
 USER root:root
+
 ENV GWSETUP_LANG=de
 ENV GWD_LANG=de
+
 ENTRYPOINT bin/geneweb-launch.sh >/dev/null 2>&1
 
 EXPOSE 2316-2317

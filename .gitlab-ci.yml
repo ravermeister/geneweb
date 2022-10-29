@@ -117,15 +117,15 @@ publish:
         docker tag "$CI_IMAGE:arm32" "$CI_REGISTRY_IMAGE:arm32"
         docker push "$CI_REGISTRY_IMAGE:arm32"
         docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm32"
-   	    docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
-  	    PUSH_MANIFEST=true
+        docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm32"
+        PUSH_MANIFEST=true
       fi
     - >
       if [ "$BUILD_ARM64" = "true" ]; then
         docker tag "$CI_IMAGE:arm64" "$CI_REGISTRY_IMAGE:arm64"
         docker push "$CI_REGISTRY_IMAGE:arm64"
         docker manifest create -a "$CI_REGISTRY_IMAGE:$GENEWEB_COMMIT_DATE" "$CI_REGISTRY_IMAGE:arm64"
-   	    docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm64"
+        docker manifest create -a "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:arm64"
         PUSH_MANIFEST=true
       fi
     - >

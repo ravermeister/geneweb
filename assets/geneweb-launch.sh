@@ -8,8 +8,9 @@ GWD_STATUS=
 GWSETUP_PID=
 GWSETUP_STATUS=
 
-GWSETUP_LANG=de
-GWD_LANG=de
+# set via docker env variable
+#GWSETUP_LANG=de
+#GWD_LANG=de
 
 ## runs as geneweb
 isalive(){

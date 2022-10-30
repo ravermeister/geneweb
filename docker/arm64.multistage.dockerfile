@@ -65,8 +65,8 @@ RUN adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash g
 USER geneweb:geneweb
 WORKDIR /usr/local/share/geneweb
 RUN mkdir -p bin etc log share/data share/dist \
-  && echo "GWSETUP_LANG=$GWSETUP_LANG" >>.profile \
-  && echo "GWD_LANG="$GWD_LANG" >>.profile
+  && echo "export GWSETUP_LANG=$GWSETUP_LANG" >>.profile \
+  && echo "export GWD_LANG="$GWD_LANG" >>.profile
 COPY --from=builder /home/geneweb/geneweb/distribution share/dist
 RUN mv share/dist/bases share/data
 ADD gwsetup_only etc/gwsetup_only

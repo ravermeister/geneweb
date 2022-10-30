@@ -76,9 +76,9 @@ start() {
 ## runs as geneweb
 watch() {
 	while sleep 60; do
-		ps -eo comm | grep -q gwsetup 
+		ps -eo comm | grep -q gwsetup
 		GWSETUP_STATUS=$?
-		ps -eo comm | grep -q gwd 
+		ps -eo comm | grep -q gwd
 		GWD_STATUS=$?
 		isalive
 	done
@@ -91,7 +91,7 @@ watch() {
 ## run the startup routine as correct geneweb user
 if [ $(id -u) -eq 0 ]; then
 	init
-	su -c "$0" -l geneweb
+	su -l geneweb -c "$0"
 else
 	start
 fi

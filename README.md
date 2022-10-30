@@ -1,5 +1,5 @@
 # geneweb
-arm64 (Alpine) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository").
+arm64 (debian:stable-slim) Docker for [GeneWeb](https://github.com/geneweb/geneweb "Geneweb Repository").
 The generated image is pushed to [docker hub](https://hub.docker.com/r/ravermeister/geneweb)  
 
 ## Quickstart
@@ -33,6 +33,8 @@ mkdir -p $LOGDIR
 docker pull ravermeister/geneweb
 #run the image
 docker run -d -t \
+-e GWSETUP_LANG=de \
+-e GWD_LANG=DE \
 -p $GWD_PORT:2317 \
 -p $GWSETUP_PORT:2316 \
 -p $GWAPI_PORT:2322 \
@@ -45,7 +47,8 @@ ravermeister/geneweb
 ```
 
 for gwsetup you must edit the `$CONFDIR/gwsetup_only` file and 
-replace the IP with the local IP or Hostname where the docker container runs within.
+replace the IP with the local IP or Hostname where the docker container runs within.  
+The env vars `GWSETUP_LANG` and `GWD_LANG` are optional and set to `de` per default.
 
 *  gwsetup will be available on localhost:2316
 *  gwd will be available on localhost:2317

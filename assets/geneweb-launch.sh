@@ -25,6 +25,11 @@ init() {
 	chown -R geneweb:geneweb share/data
 	chown -R geneweb:geneweb etc
 	chown -R geneweb:geneweb log
+
+	echo "export GWSETUP_LANG=$GWSETUP_LANG" >>.profile
+	echo "export GWD_LANG=$GWD_LANG" >>.profile
+	chown geneweb:geneweb .profile
+
 	/usr/sbin/rsyslogd >/dev/null 2>&1
 }
 

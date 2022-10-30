@@ -11,8 +11,6 @@ GWSETUP_STATUS=
 # set via docker env variable
 #GWSETUP_LANG=de
 #GWD_LANG=de
-export GWSETUP_LANG
-export GWD_LANG
 
 ## runs as geneweb
 isalive(){
@@ -27,7 +25,6 @@ init() {
 	chown -R geneweb:geneweb share/data
 	chown -R geneweb:geneweb etc
 	chown -R geneweb:geneweb log
-
 	/usr/sbin/rsyslogd >/dev/null 2>&1
 }
 

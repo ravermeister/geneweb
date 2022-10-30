@@ -58,19 +58,21 @@ RUN set -eux; \
   rm -rf /etc/update-motd.d /etc/motd /etc/motd.dynamic && \
   ln -fs /dev/null /run/motd.dynamic
 
+ENV GWSETUP_LANG=de
+ENV GWD_LANG=de
+
 RUN adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb
 USER geneweb:geneweb
 WORKDIR /usr/local/share/geneweb
-RUN mkdir -p bin etc log share/data share/dist
+RUN mkdir -p bin etc log share/data share/dist \
+  && echo "GWSETUP_LANG=$GWSETUP_LANG" >>.profile \
+  && echo "GWD_LANG="$GWD_LANG" >>.profile
 COPY --from=builder /home/geneweb/geneweb/distribution share/dist
 RUN mv share/dist/bases share/data
 ADD gwsetup_only etc/gwsetup_only
 ADD geneweb-launch.sh bin/geneweb-launch.sh
 
 USER root:root
-
-ENV GWSETUP_LANG=de
-ENV GWD_LANG=de
 
 ENTRYPOINT bin/geneweb-launch.sh >/dev/null 2>&1
 

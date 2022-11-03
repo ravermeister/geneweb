@@ -26,10 +26,6 @@ init() {
 	chown -R geneweb:geneweb etc
 	chown -R geneweb:geneweb log
 
-	echo "export GWSETUP_LANG=$GWSETUP_LANG" >>.profile
-	echo "export GWD_LANG=$GWD_LANG" >>.profile
-	chown geneweb:geneweb .profile
-
 	/usr/sbin/rsyslogd >/dev/null 2>&1
 }
 
@@ -96,7 +92,9 @@ watch() {
 ## run the startup routine as correct geneweb user
 if [ $(id -u) -eq 0 ]; then
 	init
-	su -l geneweb -c "$0"
+	su -c "$0" -l geneweb \
+	   -w GWD_LANG \
+	   -w GWSETUP_LANG
 else
 	start
 fi

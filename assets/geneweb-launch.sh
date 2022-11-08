@@ -2,10 +2,7 @@
 # Jonny Rimkus <jonny@rimkus.it>
 # Geneweb start script for use inside the docker image
 
-GWD_PID=
 GWD_STATUS=
-
-GWSETUP_PID=
 GWSETUP_STATUS=
 
 # set via docker env variable
@@ -39,7 +36,6 @@ start() {
 	-only ../../etc/gwsetup_only \
 	-lang $GWSETUP_LANG \
 	>>../../log/gwsetup.log 2>&1
-	GWSETUP_PID=$!
 	GWSETUP_STATUS=$?
 
 	GWD_AUTH_FILE=/usr/local/share/geneweb/etc/gwd_passwd
@@ -54,7 +50,6 @@ start() {
 		-blang \
 		-log ../../log/gwd.log \
 		>>../../log/gwd.log 2>&1
-		GWD_PID=$!
 		GWD_STATUS=$?
 	else
 		../dist/gw/gwd \
@@ -65,7 +60,6 @@ start() {
 		-blang \
 		-log ../../log/gwd.log \
 		>>../../log/gwd.log 2>&1
-		GWD_PID=$!
 		GWD_STATUS=$?
 	fi
 

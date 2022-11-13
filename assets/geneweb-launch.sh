@@ -43,6 +43,7 @@ start() {
 	if [ -f $GWD_AUTH_FILE ]; then
 		../dist/gw/gwd \
 		-daemon \
+                -plugins -unsafe ../dist/gw/plugins \
 		-trace_failed_passwd \
 		-auth $GWD_AUTH_FILE \
 		-hd ../dist/gw \
@@ -54,6 +55,7 @@ start() {
 	else
 		../dist/gw/gwd \
 		-daemon \
+                -plugins -unsafe ../dist/gw/plugins \
 		-trace_failed_passwd \
 		-hd ../dist/gw \
 		-lang $GWD_LANG \

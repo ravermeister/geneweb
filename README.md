@@ -60,3 +60,21 @@ there are 3 folders which are currently exposed:
 *  data -> all geneweb databases. You can create an authority file for gwd where each line is e.g `user:password`. 
 The file __must__ be called `gwd_passwd` because the `geneweb-launch.sh` 
 starts gwd with the correct runtime argument when the file is found.
+
+### Plugins
+Genweb has some Plugins available, for e.g. Image upload you need the `v7_im` plugin.
+the plugin directory `/usr/local/share/geneweb/share/dist/gw/plugins` is pre-configured in the start script.
+Currently following plugins are included:
+- cgl
+- export
+- fixbase
+- forum
+- gwxjg
+- jingoo
+- lib_show
+- no_index
+- v7_im
+- xhtml
+
+To enable plugins you have to add (or find the line) `plugins=` inside the `$DATADIR/[family].gwf` file
+and add each plugin as a comma separated list.

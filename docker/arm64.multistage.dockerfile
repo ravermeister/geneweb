@@ -72,7 +72,7 @@ ADD geneweb-launch.sh bin/geneweb-launch.sh
 
 USER root:root
 
-ENTRYPOINT bin/geneweb-launch.sh >/dev/null 2>&1
+ENTRYPOINT [ "bin/geneweb-launch.sh" ]
 
 EXPOSE 2316-2317
 EXPOSE 2322

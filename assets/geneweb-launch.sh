@@ -5,10 +5,6 @@
 GWD_STATUS=
 GWSETUP_STATUS=
 
-# set via docker env variable
-#GWSETUP_LANG=de
-#GWD_LANG=de
-
 ## runs as geneweb
 isalive(){
 	if [ $GWD_STATUS -ne 0 -o $GWSETUP_STATUS -ne 0 ]; then
@@ -22,8 +18,37 @@ init() {
 	chown -R geneweb:geneweb share/data
 	chown -R geneweb:geneweb etc
 	chown -R geneweb:geneweb log
+}
 
-	/usr/sbin/rsyslogd >/dev/null 2>&1
+run_gwd() {
+	# Launch gwd in foreground, logs written to standard output
+	cd share/data
+
+	GWD_AUTH_FILE=/usr/local/share/geneweb/etc/gwd_passwd
+	if [ -f $GWD_AUTH_FILE ]; then
+		AUTH_ARG="-auth $GWD_AUTH_FILE"
+	else
+		AUTH_ARG=""
+	fi
+
+	exec ../dist/gw/gwd \
+		-plugins -unsafe ../dist/gw/plugins \
+		-trace_failed_passwd \
+		$AUTH_ARG \
+		-hd ../dist/gw \
+		-lang $GWD_LANG \
+		-blang \
+		-log -
+}
+
+run_gwsetup() {
+	# Launch gwsetup in foreground, logs written to standard output
+	cd share/data
+
+	exec ../dist/gw/gwsetup \
+		-gd ../dist/gw \
+		-only ../../etc/gwsetup_only \
+		-lang $GWSETUP_LANG
 }
 
 ## runs as geneweb
@@ -39,31 +64,23 @@ start() {
 	GWSETUP_STATUS=$?
 
 	GWD_AUTH_FILE=/usr/local/share/geneweb/etc/gwd_passwd
-
 	if [ -f $GWD_AUTH_FILE ]; then
-		../dist/gw/gwd \
-		-daemon \
-                -plugins -unsafe ../dist/gw/plugins \
-		-trace_failed_passwd \
-		-auth $GWD_AUTH_FILE \
-		-hd ../dist/gw \
-		-lang $GWD_LANG \
-		-blang \
-		-log ../../log/gwd.log \
-		>>../../log/gwd.log 2>&1
-		GWD_STATUS=$?
+		AUTH_ARG="-auth $GWD_AUTH_FILE"
 	else
-		../dist/gw/gwd \
-		-daemon \
-                -plugins -unsafe ../dist/gw/plugins \
-		-trace_failed_passwd \
-		-hd ../dist/gw \
-		-lang $GWD_LANG \
-		-blang \
-		-log ../../log/gwd.log \
-		>>../../log/gwd.log 2>&1
-		GWD_STATUS=$?
+		AUTH_ARG=""
 	fi
+
+	../dist/gw/gwd \
+	-daemon \
+	-plugins -unsafe ../dist/gw/plugins \
+	-trace_failed_passwd \
+	$AUTH_ARG \
+	-hd ../dist/gw \
+	-lang $GWD_LANG \
+	-blang \
+	-log ../../log/gwd.log \
+	>>../../log/gwd.log 2>&1
+	GWD_STATUS=$?
 
 	isalive
 	echo "gwsetup and gwd started!"
@@ -82,18 +99,26 @@ watch() {
 }
 
 
-
 ## main routine
 ## run init things as root (set permissions etc.)
 ## run the startup routine as correct geneweb user
 if [ $(id -u) -eq 0 ]; then
 	init
-	su -c "$0" -l geneweb \
+	su -c "$0 $@" -l geneweb \
 	   -w GWD_LANG \
 	   -w GWSETUP_LANG
 else
-	start
+	case "$1" in
+	"gwd_only")
+		run_gwd
+		;;
+	"gwsetup_only")
+		run_gwsetup
+		;;
+	*)
+		start
+		;;
+	esac
 fi
 
-exit 0
 

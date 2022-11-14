@@ -37,7 +37,7 @@ services:
       - traefik.http.routers.geneweb.middlewares=geneweb_auth,geneweb
       - traefik.http.routers.geneweb.service=geneweb_portal
       - traefik.http.middlewares.geneweb.stripprefix.prefixes=/geneweb
-      # optional : ask for a user/password to acces "https://[mydomain]/geneweb/"
+      # optional : ask for a user/password to access "https://[mydomain]/geneweb/"
       - traefik.http.middlewares.geneweb_auth.basicauth.users=friends:$$apr1$$KXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
   geneweb_setup:
@@ -66,7 +66,7 @@ services:
       - traefik.http.routers.geneweb_setup.middlewares=geneweb_setup_auth,geneweb_setup
       - traefik.http.middlewares.geneweb_setup.stripprefix.prefixes=/geneweb_setup
       - traefik.http.routers.geneweb_setup.service=geneweb_setup
-      # optional : ask for a user/password to acces "https://[mydomain]/geneweb_setup/"
+      # optional : ask for a user/password to access "https://[mydomain]/geneweb_setup/"
       - traefik.http.middlewares.geneweb_setup_auth.basicauth.users=gw_admin:$$apr1$$Us5kZERd$$XXXXXXXXXXXXXXXXXXXXXX
 
 networks:

@@ -53,6 +53,19 @@ The env vars `GWSETUP_LANG` and `GWD_LANG` are optional and set to `de` per defa
 *  gwsetup will be available on localhost:2316
 *  gwd will be available on localhost:2317
 
+## Running Geneweb in Docker Compose
+
+Geneweb servers can be run as a multi-container application, with the following features :
+- Start and stop services (gwd and geneweb_setup) separately.
+- View the status of running services
+- Stream the log output of running services through the docker logging facility
+- Expose the services through a reverse-proxy (eg [Traefik](https://doc.traefik.io/traefik/))
+
+A sample Docker Compose configuration file is provided: `docker/docker-compose.example.yml`.
+- Copy this file in your working directory, rename it `docker-compose.yml`, 
+- adapt the content of this file to suit your needs, and provide a few parameters in a `.env` file (`GWD_LANG`, `GWSETUP_LANG`, `CONFDIR`, `DATADIR`). See below for configuration details.
+- run `docker-compose up -d` (or `sudo docker-compose up -d` depending on your environment).
+
 ## Configuration
 there are 3 folders which are currently exposed:
 *  log -> all log files are written into this folder

@@ -6,7 +6,6 @@ DATADIR=$(dirname $(readlink -f $0))/data
 
 GWD_PORT=2317
 GWSETUP_PORT=2316
-GWAPI_PORT=2322
 
 DOCKER_IMAGE="ravermeister/geneweb"
 
@@ -31,7 +30,6 @@ start() {
 	docker run -d -t \
 	 -p $GWD_PORT:2317 \
 	 -p $GWSETUP_PORT:2316 \
-	 -p $GWAPI_PORT:2322 \
 	 -v $CONFDIR:/usr/local/share/geneweb/etc \
 	 -v $DATADIR:/usr/local/share/geneweb/share/data \
 	 -v $LOGDIR:/usr/local/share/geneweb/log \

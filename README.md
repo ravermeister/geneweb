@@ -25,6 +25,8 @@ Note that you have to rerun the `./geneweb setup` and restart the container to h
 CONFDIR=/etc/geneweb
 LOGDIR=/var/log/geneweb
 DATADIR=/var/local/geneweb
+GWD_PORT=2316
+GWSETUP_PORT=2317
 mkdir -p $CONFDIR
 echo "172.17.0.1" >$CONFDIR/gwsetup_only
 mkdir -p $DATADIR
@@ -37,7 +39,6 @@ docker run -d -t \
 -e GWD_LANG=DE \
 -p $GWD_PORT:2317 \
 -p $GWSETUP_PORT:2316 \
--p $GWAPI_PORT:2322 \
 -v $CONFDIR:/usr/local/share/geneweb/etc \
 -v $DATADIR:/usr/local/share/geneweb/share/data \
 -v $LOGDIR:/usr/local/share/geneweb/log \
@@ -61,9 +62,13 @@ Geneweb servers can be run as a multi-container application, with the following 
 - Stream the log output of running services through the docker logging facility
 - Expose the services through a reverse-proxy (eg [Traefik](https://doc.traefik.io/traefik/))
 
-A sample Docker Compose configuration file is provided: `docker/docker-compose.example.yml`.
-- Copy this file in your working directory, rename it `docker-compose.yml`, 
-- adapt the content of this file to suit your needs, and provide a few parameters in a `.env` file (`GWD_LANG`, `GWSETUP_LANG`, `CONFDIR`, `DATADIR`). See below for configuration details.
+A sample Docker Compose configuration file including the required Traefik parameters is provided: `docker/docker-compose.example.traefik.yml`.  
+A sample Docker Compose without the Traefik parameters (for use with an already existing Webserver/Proxy) is provided: `docker/docker-compose.example.yml`
+- Copy the desired file in your working directory, rename it to `docker-compose.yml`, 
+- adapt the content of this file to suit your needs, and provide a few parameters in a `.env` file   
+  - for the `docker/docker-compose.example.traefik.yml` (`GWD_LANG`, `GWSETUP_LANG`, `CONFDIR`, `DATADIR`).
+  - for the `docker/docker-compose.example.traefik.yml` (`GWD_LANG`, `GWSETUP_LANG`, `CONFDIR`, `DATADIR`, `GWD_PORT`, `GWSETUP_PORT`).
+See below for configuration details.
 - run `docker-compose up -d` (or `sudo docker-compose up -d` depending on your environment).
 
 ## Configuration

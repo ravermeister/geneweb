@@ -1,7 +1,6 @@
 version: '3.3'
 
 services:
-
   geneweb:
     image: ravermeister/geneweb
 
@@ -18,27 +17,8 @@ services:
       - ${DATADIR}:/usr/local/share/geneweb/share/data
       # no need to specify log volume, as all log is directed to standard
       # output, and will be available with "docker-compose logs"
-
-    # We will expose ports in a private network, reachable through a
-    # reverse-proxy.
-    # No need to specify ports section, because listen ports will be exposed to
-    # our private network.
-    networks:
-      - web
-
-    # Here are labels to instruct Traefik reverse proxy to route requests for
-    # "https://[mydomain]/geneweb/" to this container, port 2317.
-    labels:
-      - traefik.enable=true
-      # name this service as "geneweb_portal" and specify port
-      - traefik.http.services.geneweb_portal.loadbalancer.server.port=2317
-      - traefik.http.routers.geneweb.entrypoints=websecure
-      - traefik.http.routers.geneweb.rule=PathPrefix(`/geneweb/`)
-      - traefik.http.routers.geneweb.middlewares=geneweb_auth,geneweb
-      - traefik.http.routers.geneweb.service=geneweb_portal
-      - traefik.http.middlewares.geneweb.stripprefix.prefixes=/geneweb
-      # optional : ask for a user/password to access "https://[mydomain]/geneweb/"
-      - traefik.http.middlewares.geneweb_auth.basicauth.users=friends:$$apr1$$KXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    ports:
+        - "${GWD_PORT}:2317"
 
   geneweb_setup:
     image: ravermeister/geneweb
@@ -52,25 +32,5 @@ services:
       - ${DATADIR}:/usr/local/share/geneweb/share/data
       # no need to specify log volume, as all log is directed to standard
       # output, and will be available with "docker-compose logs"
-
-    networks:
-      - web
-
-    # Here are labels to instruct Traefik reverse proxy to route requests for
-    # "https://[mydomain]/geneweb_setup/" to this container, port 2316.
-    labels:
-      - traefik.enable=true
-      - traefik.http.services.geneweb_setup.loadbalancer.server.port=2316
-      - traefik.http.routers.geneweb_setup.entrypoints=websecure
-      - traefik.http.routers.geneweb_setup.rule=PathPrefix(`/geneweb_setup/`)
-      - traefik.http.routers.geneweb_setup.middlewares=geneweb_setup_auth,geneweb_setup
-      - traefik.http.middlewares.geneweb_setup.stripprefix.prefixes=/geneweb_setup
-      - traefik.http.routers.geneweb_setup.service=geneweb_setup
-      # optional : ask for a user/password to access "https://[mydomain]/geneweb_setup/"
-      - traefik.http.middlewares.geneweb_setup_auth.basicauth.users=gw_admin:$$apr1$$Us5kZERd$$XXXXXXXXXXXXXXXXXXXXXX
-
-networks:
-  # The "web" network is dedicated to connect the Traefik container with the
-  # application containers.
-  web:
-    external: true
+    ports:
+        - "$GWSETUP_PORT:2316"

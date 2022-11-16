@@ -75,5 +75,3 @@ USER root:root
 ENTRYPOINT [ "bin/geneweb-launch.sh" ]
 
 EXPOSE 2316-2317
-EXPOSE 2322
-

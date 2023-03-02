@@ -15,15 +15,13 @@ RUN set -eux; \
     pkg-config libgmp-dev libperl-dev libipc-system-simple-perl \
     libstring-shellquote-perl git subversion mercurial rsync \
     libcurl4-openssl-dev musl-dev protobuf-compiler opam rsyslog \
-    bubblewrap darcs musl-tools procps && \
+    bubblewrap darcs musl-tools procps libpcre3-dev xdot && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   rm -rf /etc/update-motd.d /etc/motd /etc/motd.dynamic && \
   ln -fs /dev/null /run/motd.dynamic
 
-RUN rm -rf /usr/local/share/geneweb && \
-  mkdir -p /usr/local/share/geneweb && \ 
-  adduser --system --group --shell /bin/bash geneweb
+RUN adduser --system --group --shell /bin/bash geneweb
 
 USER geneweb:geneweb
 WORKDIR /home/geneweb
@@ -61,11 +59,21 @@ RUN set -eux; \
 ENV GWSETUP_LANG=de
 ENV GWD_LANG=de
 
-RUN adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb
+RUN rm -rf /usr/local/share/geneweb && \
+  mkdir -p /usr/local/share/geneweb/dist \
+  /usr/local/share/geneweb/data \
+  /usr/local/share/geneweb/bin \
+  /usr/local/share/geneweb/etc \
+  /usr/local/share/geneweb/log && \
+  adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb \
+  
+
+COPY --from=builder /home/geneweb/geneweb/distribution /usr/local/share/geneweb/share/dist
+RUN chown -R geneweb:geneweb /usr/local/share/geneweb
+
 USER geneweb:geneweb
 WORKDIR /usr/local/share/geneweb
-RUN mkdir -p bin etc log share/data share/dist
-COPY --from=builder /home/geneweb/geneweb/distribution share/dist
+
 RUN mv share/dist/bases share/data
 ADD gwsetup_only etc/gwsetup_only
 ADD geneweb-launch.sh bin/geneweb-launch.sh

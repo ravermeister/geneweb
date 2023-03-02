@@ -65,7 +65,7 @@ RUN rm -rf /usr/local/share/geneweb && \
   /usr/local/share/geneweb/bin \
   /usr/local/share/geneweb/etc \
   /usr/local/share/geneweb/log && \
-  adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb \
+  adduser --system --group --home /usr/local/share/geneweb --shell /bin/bash geneweb
   
 
 COPY --from=builder /home/geneweb/geneweb/distribution /usr/local/share/geneweb/share/dist
